@@ -1,0 +1,29 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Design artifacts — codificação acontece em M0.5.c. Até lá, ficam local.
+# Cobre tanto .zip quanto pasta extraída (ex: "Strata Design System/")
+Strata Design System*
+*Strata Design System*
+
+# Future code (preempt pra evitar commits acidentais quando M1 começar)
+node_modules/
+dist/
+build/
+out/
+.env
+.env.local
+.env.*.local
+*.log
+npm-debug.log*
+
+# Tauri
+src-tauri/target/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
