@@ -33,3 +33,10 @@ Mudanças com impacto observável. Granularidade: alguém externo deveria conseg
   - `plans/m05-screens-m3.md` (NOVO) — branch tree signature primitive + fork interaction + command palette
 - `.gitignore` criado: bloqueia `Strata Design System.zip` (todas variantes), preempts node_modules/dist/build/.env/Tauri target
 - Cada spec tem: wireframe ASCII, elementos top-to-bottom com DS primitives, interactive elements, todos os states, copy strings PT+EN, anti-patterns específicos, justificativa
+
+## 2026-05-05 — decisões de escopo (Brave Search M4 + email out + customization scope)
+- **Brave Search aprovado pra M4** como tool opt-in (`web.search` / `brave.search`); requer API key em `~/.strata/auth/brave.json`; tool não registra sem key (sem fallback silente)
+- **Email/inbox declarado OUT do escopo Strata**; será produto Mora separado quando virar prioridade. Adicionado ao parking lot do backlog como referência
+- **ADR-0004 (draft)** criado — `Customization scope: extensible surfaces vs locked product rules` — formaliza a linha contratual entre o que usuário pode mudar (tools, providers, comandos, themes, skills, models.json, paths) e o que é regra dura travada (Vereda default, Mestre não persiste, vault inbox-only, sem fallback silente, frontmatter canônico, telemetria opt-in, mode = accent shift). Promove pra `ativo` em M4.
+- `backlog.md` reorganizado: M4 vira "Tools opt-in + frontmatter rich" (web search Brave + vault reader + frontmatter completo + customization guide + Mode Router validation de tools customizadas)
+- `decisions.md` acrescenta entrada 2026-05-05 com as 3 decisões
