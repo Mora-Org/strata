@@ -1,0 +1,159 @@
+<!doctype html>
+<html data-theme="dark" data-mode="mestre" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Strata — diff (Mestre)</title>
+  <link rel="stylesheet" href="../app.css" />
+</head>
+<body>
+  <div class="app">
+
+    <header class="header">
+      <div class="header-inner">
+        <div class="header-mark">
+          <svg class="glyph" viewBox="0 0 64 64" width="18" height="18" fill="currentColor" aria-hidden="true">
+            <rect x="8" y="14" width="48" height="6" rx="1" opacity="1"></rect>
+            <rect x="8" y="24" width="48" height="6" rx="1" opacity="0.65"></rect>
+            <rect x="8" y="34" width="48" height="6" rx="1" opacity="0.40"></rect>
+            <rect x="8" y="44" width="48" height="6" rx="1" opacity="0.22"></rect>
+          </svg>
+          <span class="strata">strata</span>
+        </div>
+        <div class="header-masthead">
+          <div class="col"><span class="lbl">workspace</span><span class="val">strata-cli</span></div>
+          <div class="col"><span class="lbl">vault</span><span class="val">~/notes/strata</span></div>
+          <div class="col"><span class="lbl">model</span><span class="val">llama3.1:8b</span></div>
+        </div>
+        <div class="header-actions">
+          <span class="switch-lbl">switch</span>
+          <span class="mode-badge">mestre</span>
+        </div>
+      </div>
+    </header>
+
+    <aside class="sidebar">
+      <div class="side-section">
+        <div class="side-divider"><span class="label">workspace</span></div>
+        <div class="ws-block"><span class="ws-name">strata-cli</span><span class="ws-path">~/code/strata-cli</span></div>
+      </div>
+      <div class="side-section flex-rest">
+        <div class="side-divider"><span class="label">conversations</span></div>
+        <div class="chat-list">
+          <div class="chat-item active"><div class="ttl">parse_expr lookahead</div><div class="meta">just now</div></div>
+          <div class="chat-item"><div class="ttl">Rust lifetimes</div><div class="meta">5 min ago</div></div>
+        </div>
+      </div>
+      <div class="side-section">
+        <div class="side-divider"><span class="label">vault</span></div>
+        <div class="status-rows">
+          <div class="status-row"><span class="status-bullet ok"></span><span class="lbl">~/notes/strata</span></div>
+          <div class="status-row"><span class="status-bullet ok"></span><span class="lbl">ollama · llama3.1:8b</span></div>
+        </div>
+      </div>
+      <div class="side-foot">
+        <button class="btn btn-ghost" type="button"><span style="font-family: var(--font-mono); font-size: 13px;">+</span><span>new</span></button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="main-inner">
+        <span class="corner-tl">+</span><span class="corner-tr">+</span>
+
+        <div class="main-scroll">
+          <div class="main-scroll-inner">
+
+            <article class="msg msg-user">
+              <div class="msg-avatar">[u]</div>
+              <div class="msg-body">
+                <div class="text">Apply the fix.</div>
+              </div>
+            </article>
+
+            <article class="msg msg-strata">
+              <div class="msg-avatar strata">
+                <svg viewBox="0 0 64 64" width="14" height="14" fill="currentColor" aria-hidden="true">
+                  <rect x="8" y="14" width="48" height="6" rx="1" opacity="1"></rect>
+                  <rect x="8" y="24" width="48" height="6" rx="1" opacity="0.65"></rect>
+                  <rect x="8" y="34" width="48" height="6" rx="1" opacity="0.40"></rect>
+                  <rect x="8" y="44" width="48" height="6" rx="1" opacity="0.22"></rect>
+                </svg>
+              </div>
+              <div class="msg-body">
+                <div class="text">
+                  <p>Drafting a change for <span class="bridge">src/parser/expr.rs:121</span>: take ownership of the slice before the lookahead closure. Approve to write.</p>
+                </div>
+
+                <!-- DIFF TOOL CALL (proposed) -->
+                <div class="toolcall">
+                  <div class="toolcall-head">
+                    <span class="toolcall-name">edit_file</span>
+                    <span class="toolcall-summary">
+                      <span class="meta-text">path</span> src/parser/expr.rs <span class="meta-text">— +4 −2</span>
+                    </span>
+                    <span class="toolcall-chevron">▾</span>
+                  </div>
+                  <div class="toolcall-body">
+                    <p class="toolcall-section-label">proposed change</p>
+
+                    <div class="diff">
+                      <div class="diff-line context"><span class="marker"> </span><span class="lineno">118</span><span class="diff-text">          if prec &lt; self.min_prec { return Ok(left); }</span></div>
+                      <div class="diff-line context"><span class="marker"> </span><span class="lineno">119</span><span class="diff-text">          self.advance();</span></div>
+                      <div class="diff-line context"><span class="marker"> </span><span class="lineno">120</span><span class="diff-text">          // lookahead — see ch. 7</span></div>
+                      <div class="diff-line removed"><span class="marker">−</span><span class="lineno">121</span><span class="diff-text">          let rhs = self.with_min_prec(prec + 1, |p| {</span></div>
+                      <div class="diff-line removed"><span class="marker">−</span><span class="lineno">122</span><span class="diff-text">              p.parse_expr()</span></div>
+                      <div class="diff-line added"><span class="marker">+</span><span class="lineno">121</span><span class="diff-text">          // Take ownership of remaining tokens before the lookahead</span></div>
+                      <div class="diff-line added"><span class="marker">+</span><span class="lineno">122</span><span class="diff-text">          // so the caller's borrow on `left` ends naturally.</span></div>
+                      <div class="diff-line added"><span class="marker">+</span><span class="lineno">123</span><span class="diff-text">          let tail = std::mem::take(&amp;mut self.tokens);</span></div>
+                      <div class="diff-line added"><span class="marker">+</span><span class="lineno">124</span><span class="diff-text">          let rhs = Self::with_min_prec(tail, prec + 1, |p| {</span></div>
+                      <div class="diff-line context"><span class="marker"> </span><span class="lineno">125</span><span class="diff-text">              p.parse_expr()</span></div>
+                      <div class="diff-line context"><span class="marker"> </span><span class="lineno">126</span><span class="diff-text">          })?;</span></div>
+                      <div class="diff-line context"><span class="marker"> </span><span class="lineno">127</span><span class="diff-text">          left = Expr::Binary(Box::new(left), op, Box::new(rhs));</span></div>
+                    </div>
+                  </div>
+                  <div class="toolcall-foot">
+                    <button class="btn btn-ghost" type="button">Reject</button>
+                    <button class="btn" type="button">Edit first</button>
+                    <button class="btn btn-primary" type="button">Approve &amp; write</button>
+                  </div>
+                </div>
+
+              </div>
+            </article>
+
+          </div>
+        </div>
+
+        <div class="composer-wrap">
+
+          <!-- SUCCESS BANNER (shown after a previous write — kept for richness of the screen) -->
+          <div class="banner-success" style="margin-bottom: 14px;">
+            <div class="text">
+              Note written to
+              <span class="path">~/notes/strata/borrow-checker-lookahead.md<span class="arrow"> →</span></span>
+              <span class="meta-text" style="color: var(--fg-3); font: var(--type-mono-sm); letter-spacing: var(--tracking-mono);">just now</span>
+            </div>
+            <button class="action" type="button">Open</button>
+          </div>
+
+          <div class="composer">
+            <textarea rows="1" placeholder="Describe a change. Strata will draft a diff for your approval."></textarea>
+            <button class="composer-send" disabled aria-label="Send">↵</button>
+          </div>
+          <div class="footer-hints">
+            <span class="plus">+</span>
+            <span class="center">
+              <span class="kbd">↵ send</span><span class="sep">·</span>
+              <span class="kbd">⇧↵ newline</span><span class="sep">·</span>
+              <span class="mode-text">mestre · reads, writes, runs</span>
+            </span>
+            <span class="plus">+</span>
+          </div>
+        </div>
+
+        <span class="corner-bl">+</span><span class="corner-br">+</span>
+      </div>
+    </main>
+
+  </div>
+</body>
+</html>

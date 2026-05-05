@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 48" width="240" height="48" role="img" aria-label="Strata by Mora">
+  
+  <g fill="currentColor">
+    <text x="0" y="22" font-family="&#39;Source Serif 4&#39;, Georgia, serif" font-size="22" font-weight="500" letter-spacing="0.5">strata</text>
+    <rect x="0" y="30" width="84" height="1" opacity="0.35"></rect>
+    <rect x="0" y="33" width="60" height="1" opacity="0.22"></rect>
+    <rect x="0" y="36" width="40" height="1" opacity="0.14"></rect>
+    <text x="92" y="40" font-family="&#39;JetBrains Mono&#39;, monospace" font-size="10" opacity="0.55" letter-spacing="0.05em">by mora</text>
+  </g>
+</svg>

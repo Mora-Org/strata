@@ -1,0 +1,30 @@
+<!doctype html>
+<html data-theme="dark" data-mode="vereda" lang="pt-BR">
+<head>
+  <meta charset="utf-8" /><title>Preview — 1.3 Streaming indicator</title>
+  <link rel="stylesheet" href="_screen-card.css" />
+</head>
+<body>
+  <div class="page">
+    <div class="page-header">
+      <div>
+        <div class="page-eyebrow">m1 — state 1.3</div>
+        <h1 class="page-title">Streaming — 3 sediment dots</h1>
+      </div>
+      <div class="page-meta">
+        <div class="col"><span class="lbl">surface</span><span class="val">inline</span></div>
+        <div class="col"><span class="lbl">mode</span><span class="val">vereda</span></div>
+        <div class="col"><span class="lbl">size</span><span class="val">1280×800</span></div>
+      </div>
+    </div>
+    <div class="page-rule"></div>
+    <div class="screen-frame">
+      <span class="corner-tl">+</span><span class="corner-tr">+</span><span class="corner-bl">+</span><span class="corner-br">+</span>
+      <iframe src="../ui_kits/strata-desktop/screens/streaming.html" title="Streaming indicator"></iframe>
+    </div>
+    <div class="notes">
+      <strong>3 sediment dots, never a spinner.</strong> Each dot cycles fg-3 → fg-2 → fg-3 over 360ms with 120ms stagger. Composer goes <em>disabled</em> with placeholder <code>Aguardando resposta…</code>. The second message in the preview demonstrates the stalled sub-state (>5s without a token): dots freeze, inline declarative text appears with <strong>tentar de novo</strong>.
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!doctype html>
+<html data-theme="dark" data-mode="vereda" lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>Strata — settings</title>
+  <link rel="stylesheet" href="../app.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="header-inner">
+        <div class="header-mark">
+          <svg class="glyph" viewBox="0 0 64 64" width="18" height="18" fill="currentColor"><rect x="8" y="14" width="48" height="6" rx="1"/><rect x="8" y="24" width="48" height="6" rx="1" opacity="0.65"/><rect x="8" y="34" width="48" height="6" rx="1" opacity="0.40"/><rect x="8" y="44" width="48" height="6" rx="1" opacity="0.22"/></svg>
+          <span class="strata">strata</span>
+        </div>
+        <div class="header-masthead">
+          <div class="col"><span class="lbl">workspace</span><span class="val">strata-cli</span></div>
+          <div class="col"><span class="lbl">vault</span><span class="val">~/notes/strata</span></div>
+          <div class="col"><span class="lbl">model</span><span class="val">llama3.1:8b</span></div>
+        </div>
+        <div class="header-actions"><span class="switch-lbl">switch</span><span class="mode-badge">vereda</span></div>
+      </div>
+    </header>
+
+    <aside class="sidebar">
+      <div class="side-section">
+        <div class="side-divider"><span class="label">workspace</span></div>
+        <div class="ws-block"><span class="ws-name">strata-cli</span><span class="ws-path">~/code/strata-cli</span></div>
+      </div>
+      <div class="side-section flex-rest">
+        <div class="side-divider"><span class="label">conversações</span></div>
+        <div class="chat-list">
+          <div class="chat-item"><div class="ttl">Rust lifetimes</div><div class="meta">5 min</div></div>
+          <div class="chat-item"><div class="ttl">Tokio task lifecycle</div><div class="meta">ontem</div></div>
+        </div>
+      </div>
+      <div class="side-section">
+        <div class="side-divider"><span class="label">vault</span></div>
+        <div class="status-rows">
+          <div class="status-row"><span class="status-bullet ok"></span><span class="lbl">~/notes/strata</span></div>
+          <div class="status-row"><span class="status-bullet ok"></span><span class="lbl">ollama · llama3.1:8b</span></div>
+        </div>
+      </div>
+      <div class="side-foot"><button class="btn btn-ghost" type="button"><span style="font-family: var(--font-mono);">+</span><span>nova</span></button></div>
+    </aside>
+
+    <main class="main">
+      <div class="main-inner">
+        <span class="corner-tl">+</span><span class="corner-tr">+</span>
+        <button class="settings-close" aria-label="Fechar configurações">×</button>
+
+        <div class="settings-view">
+          <div class="settings-inner">
+            <div class="settings-masthead-label">settings —</div>
+            <p class="settings-intro">Configurações do Strata. As mudanças aplicam ao vivo — não há botão de salvar.</p>
+
+            <!-- VAULT -->
+            <section class="s-section">
+              <div class="s-divider"><span class="label">vault</span></div>
+
+              <div class="s-field">
+                <label class="s-label">Vault path</label>
+                <div class="s-row">
+                  <input class="s-input" value="/Users/cesar/Documents/Obsidian/Micelio" />
+                  <button class="btn" type="button">Browse</button>
+                </div>
+                <div class="s-help">Strata só escreve em <code style="color: var(--fg-2);">inbox/</code> dentro deste vault.</div>
+              </div>
+
+              <div class="s-field">
+                <label class="s-label">Inbox folder</label>
+                <div class="s-row">
+                  <input class="s-input" value="inbox" style="max-width: 220px;" />
+                </div>
+              </div>
+            </section>
+
+            <!-- PROVIDER -->
+            <section class="s-section">
+              <div class="s-divider"><span class="label">provider</span></div>
+
+              <div class="s-field">
+                <label class="s-label">Local model (default)</label>
+                <div class="s-row">
+                  <input class="s-input" value="ollama · llama3.1:8b   ▾" readonly style="cursor: pointer;" />
+                </div>
+                <div class="s-status-line ok"><span class="status-bullet ok"></span><span>Ollama acessível em localhost:11434</span></div>
+              </div>
+
+              <div class="s-field">
+                <label class="s-label">Cloud fallback (opt-in)</label>
+                <div class="radio-group">
+                  <label class="radio selected"><span class="dot"></span><span>None</span></label>
+                  <label class="radio"><span class="dot"></span><span>Anthropic</span></label>
+                  <label class="radio"><span class="dot"></span><span>OpenAI</span></label>
+                  <label class="radio"><span class="dot"></span><span>Other</span></label>
+                </div>
+                <div class="s-help serif">Quando o modelo local cai, Strata usa esta opção. Nunca em silêncio — sempre indicado no masthead.</div>
+              </div>
+            </section>
+
+            <!-- APPEARANCE -->
+            <section class="s-section">
+              <div class="s-divider"><span class="label">appearance</span></div>
+
+              <div class="s-field">
+                <label class="s-label">Theme</label>
+                <div class="radio-group">
+                  <label class="radio"><span class="dot"></span><span>Auto</span></label>
+                  <label class="radio selected"><span class="dot"></span><span>Dark</span></label>
+                  <label class="radio"><span class="dot"></span><span>Light</span></label>
+                </div>
+              </div>
+
+              <div class="s-field">
+                <label class="s-label">Density</label>
+                <div class="radio-group">
+                  <label class="radio selected"><span class="dot"></span><span>Default</span></label>
+                </div>
+              </div>
+            </section>
+
+            <!-- MESTRE DEFAULTS -->
+            <section class="s-section">
+              <div class="s-divider"><span class="label">mestre defaults</span></div>
+              <div class="s-placeholder-block">— disponível em M2, quando o Modo Mestre for liberado —</div>
+            </section>
+          </div>
+        </div>
+
+        <span class="corner-bl">+</span><span class="corner-br">+</span>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+/* Screen-card preview wrapper — frames an iframe of a full screen at scale */
+@import url("../colors_and_type.css");
+
+html, body { margin: 0; background: var(--bedrock); color: var(--fg-1); min-height: 100vh; font: var(--type-body); font-variation-settings: var(--serif-body); }
+.page { padding: 32px 40px 40px; max-width: 1240px; margin: 0 auto; }
+.page-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 24px; gap: 24px; flex-wrap: wrap; }
+.page-eyebrow { font: var(--type-mono-sm); color: var(--fg-3); letter-spacing: var(--tracking-meta); text-transform: uppercase; }
+.page-title { font: 400 36px/1.1 var(--font-serif); font-style: italic; font-variation-settings: "opsz" 96, "SOFT" 80; color: var(--fg-1); margin: 6px 0 0; letter-spacing: -0.02em; }
+.page-meta { display: flex; gap: 22px; font: var(--type-mono-sm); color: var(--fg-3); letter-spacing: var(--tracking-meta); text-transform: uppercase; padding-bottom: 4px; }
+.page-meta .col { display: flex; gap: 6px; align-items: baseline; padding-right: 22px; border-right: 1px solid var(--border-1); }
+.page-meta .col:last-child { border-right: 0; padding-right: 0; }
+.page-meta .lbl::after { content: " —"; opacity: 0.55; }
+.page-meta .val { color: var(--fg-2); text-transform: none; letter-spacing: var(--tracking-mono); }
+.page-rule { height: 1px; background: var(--border-1); margin: 0 0 28px; }
+
+.screen-frame {
+  position: relative;
+  width: 1160px; height: 725px;
+  border: 1px solid var(--border-2);
+  background: var(--bedrock);
+  overflow: hidden;
+}
+.screen-frame .corner-tl, .screen-frame .corner-tr, .screen-frame .corner-bl, .screen-frame .corner-br {
+  position: absolute; font: 400 11px/1 var(--font-mono); color: var(--fg-3); pointer-events: none;
+}
+.screen-frame .corner-tl { top: 6px; left: 8px; }
+.screen-frame .corner-tr { top: 6px; right: 8px; }
+.screen-frame .corner-bl { bottom: 6px; left: 8px; }
+.screen-frame .corner-br { bottom: 6px; right: 8px; }
+.screen-frame iframe {
+  width: 1280px; height: 800px;
+  border: 0;
+  transform-origin: 0 0;
+  transform: scale(0.906);
+}
+
+.notes { margin-top: 22px; max-width: 760px; font: 400 14px/1.65 var(--font-serif); font-variation-settings: var(--serif-body); color: var(--fg-2); }
+.notes strong { color: var(--fg-1); font-weight: 500; }
+.notes ul { padding-left: 18px; margin: 8px 0 0; }
+.notes li { margin-bottom: 4px; }

@@ -41,27 +41,33 @@ status: ativo
 - Primitivos editoriais: masthead, frame.marks, italic-display, bloom-rail, hyphen-cols, pullquote, accent-bar
 - Artefato: `Strata Design System.zip` v3 (untracked na raiz)
 
-#### M0.5.b — Screens via Claude Design 🟡 EM ANDAMENTO
-- Spec dividida em **4 arquivos** pra Claude Design digerir por fase:
-  - [`m05-screen-spec.md`](m05-screen-spec.md) — índice + app shell + flows + anti-design global + prompt template
-  - [`m05-screens-m1.md`](m05-screens-m1.md) — 4 screens + 2 states (empty, active Vereda, streaming, settings, workspace picker, connection-lost)
-  - [`m05-screens-m2.md`](m05-screens-m2.md) — 1 modal + 1 aside + 4 components (mode toggle/confirm/transition, note preview, note written, tool-call, inline diff)
-  - [`m05-screens-m3.md`](m05-screens-m3.md) — 2 surfaces + 1 interaction (branch tree signature, fork-from-msg, command palette)
-- `.gitignore` criado bloqueando zips e artefatos de design
-- Cesar leva DS v2 + UMA fase por conversa Claude Design (recomendado: M1 → M2 → M3 sequencial)
-- Output esperado: kit expandido com novos screens, screenshot atualizado
+#### M0.5.b — Screens via Claude Design ✅ M1+M2 ENTREGUES (M3 pendente quota)
+- Spec dividida em 4 arquivos:
+  - [`m05-screen-spec.md`](m05-screen-spec.md) — índice + app shell + flows + anti-design + prompt template
+  - [`m05-screens-m1.md`](m05-screens-m1.md) — 6 screens M1 (✅ entregues 2026-05-05)
+  - [`m05-screens-m2.md`](m05-screens-m2.md) — 7 surfaces M2 (✅ entregues 2026-05-05)
+  - [`m05-screens-m3.md`](m05-screens-m3.md) — 3 surfaces M3 (⏸️ quota acabou — vira M0.5.d)
+- 12 screens entregues + 12 review cards em `design/preview/`
 
-#### M0.5.c — Codificação única (após retorno) ⏸️ AGUARDA
-9 passos consolidados (DS + screens em pass único):
-- [ ] Cria `design/` no repo, copia zip v3 + screens novos
-- [ ] Extrai `Fraunces.zip` e `geist-font-1.8.0.zip` pra `design/fonts/`
-- [ ] Cria `.speckit/product/design-system.md` (canônico enxuto)
-- [ ] Cria `ADR-0003 — Editorial register chosen as Strata's visual language`
-- [ ] Atualiza `CONTEXT_DIRECTOR.md §3` com Design System travado
-- [ ] Atualiza `decisions.md` + `patch-notes.md`
-- [ ] Atualiza `plans/current.md` (M0.5 fecha)
-- [ ] Commit `M0.5: design system v2 + screens — editorial register`
-- [ ] Push pro `Mora-Org/strata`
+#### M0.5.c — Codificação parcial (M1+M2 + DS) ✅ FECHADA 2026-05-05
+9 passos executados:
+- [x] Criada pasta `design/` no repo com conteúdo completo do handoff Claude Design
+- [x] 4 fontes variable em `design/assets/fonts/` (Fraunces ttf + italic, GeistVF, GeistMonoVF) + 2 OFL.txt
+- [x] 12 screens em `design/ui_kits/strata-desktop/screens/` (M1: empty, active, streaming, settings, workspace, connection-lost; M2: mode-confirm v→m, mode-confirm m→v, with-note-preview, with-tool-call, with-diff, mestre)
+- [x] 12 review cards em `design/preview/`
+- [x] `colors_and_type.css` canônico em `design/` (referenciado no kit via `@import`)
+- [x] `.speckit/product/design-system.md` criado — spec enxuto canônico (~250 linhas)
+- [x] `ADR-0003 — Editorial register chosen as Strata's visual language` (status: ativo)
+- [x] `CONTEXT_DIRECTOR.md §3` atualizado com linha "Design System" travada na stack
+- [x] `CLAUDE.md` atualizado: linha "Antes de escrever UI/CSS" + Stack inclui Design system + Arquitetura mostra `design/`
+- [x] `README.md` Stack table atualizado com row "Design system"
+- [x] `decisions.md`, `patch-notes.md`, `current.md`, `backlog.md` atualizados
+
+#### M0.5.d — Screens M3 (signature + palette) ⏸️ AGUARDA QUOTA CLAUDE DESIGN
+- 3 surfaces pendentes: branch tree (signature primitive), fork-from-message, command palette (Cmd+K)
+- Spec já pronta em [`m05-screens-m3.md`](m05-screens-m3.md)
+- Quando quota voltar: nova conversa Claude Design (mesma estratégia M1/M2), output adicionado ao `design/` existente
+- Codificação será iteração pequena (M0.5.e) ou direto na M0.5.d
 
 ## Próxima iteração (preview)
 

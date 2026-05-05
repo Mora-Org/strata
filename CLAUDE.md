@@ -7,6 +7,8 @@ Sou o **Programador** do Strata. Cesar é o Diretor — ele decide o que constru
 
 **Antes de propor abordagem:** consulto [`CONTEXT_DIRECTOR.md`](CONTEXT_DIRECTOR.md) (regras, stack, regras duras §4) e [`.speckit/plans/current.md`](.speckit/plans/current.md) (iteração atual). Desvio das §3/§4 do Director = bloqueador, não execução silenciosa.
 
+**Antes de escrever UI/CSS:** consulto [`design/`](design/) — DS canônico v2 (Fraunces / Geist / Geist Mono · editorial register · 12 screens M1+M2 já desenhadas em `design/ui_kits/strata-desktop/screens/`) — e [`.speckit/product/design-system.md`](.speckit/product/design-system.md) (spec enxuto). O kit em `design/` é **referência visual** — em M1 dev, runtime real é reimplementação React/TS sobre `src/`.
+
 ---
 
 ## A Filosofia do Produto (leia antes de qualquer código)
@@ -38,6 +40,7 @@ Toda feature nova deve respeitar essa distinção. Se uma feature colapsa os doi
 - **Modelos locais:** Ollama (API compatível com OpenAI)
 - **Modelos cloud:** via providers do Pi (Anthropic, OpenAI, Gemini, DeepSeek, Groq, Cerebras)
 - **Vault:** Obsidian — markdown com frontmatter YAML
+- **Design system:** Strata DS v2 — editorial register (Fraunces / Geist / Geist Mono variable) — ver [`design/`](design/) e [`.speckit/product/design-system.md`](.speckit/product/design-system.md). Travado em [ADR-0003](.speckit/architecture/adr/ADR-0003-editorial-register.md).
 - **Testes:** Vitest (unit) + Playwright (e2e) + TestSprite (QA)
 
 ---
@@ -66,7 +69,7 @@ Ollama deve estar rodando em `http://localhost:11434` para modelos locais.
 
 ```
 strata/
-├── src/                    # Frontend React
+├── src/                    # Frontend React (a partir de M1 dev)
 │   ├── components/
 │   │   ├── layout/         # AppLayout, Shell
 │   │   ├── chat/           # ChatWindow, MessageBubble, ModeToggle
@@ -79,12 +82,20 @@ strata/
 │   │   └── obsidian/       # Gerador de notas .md
 │   ├── store/              # Zustand slices
 │   └── types/              # Contratos TypeScript
-├── src-tauri/              # Backend Rust (Tauri)
+├── src-tauri/              # Backend Rust (Tauri, a partir de M1 dev)
 │   ├── src/
 │   │   └── main.rs
 │   └── tauri.conf.json
-├── docs/                   # Documentação técnica
+├── design/                 # DS v2 canônico — referência visual (não runtime)
+│   ├── colors_and_type.css   # tokens (oklch, type families, primitives)
+│   ├── README.md             # guia visual completo
+│   ├── SKILL.md              # Claude Code skill manifest
+│   ├── assets/fonts/         # Fraunces, Geist, Geist Mono (variable, OFL)
+│   ├── preview/              # review cards (12 screens + primitivos)
+│   └── ui_kits/strata-desktop/  # kit interativo + 12 screens M1+M2
+├── .speckit/               # Specs vivas, planos, tracking, ADRs
 ├── CLAUDE.md               # Este arquivo
+├── CONTEXT_DIRECTOR.md     # Regras, stack, regras duras §4
 ├── manifesto.md            # Filosofia do produto
 └── README.md               # Overview público
 ```

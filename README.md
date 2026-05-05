@@ -92,6 +92,7 @@ As notas vão direto para `inbox/` ou `conceitos/` do seu vault — você decide
 | Modelos locais | Ollama |
 | Modelos cloud | Anthropic, OpenAI, Gemini, DeepSeek e outros (via Pi) |
 | Vault | Obsidian (markdown + frontmatter) |
+| Design system | Strata DS v2 — editorial register (Fraunces / Geist / Geist Mono variable) — ver [`design/`](design/) |
 
 ---
 

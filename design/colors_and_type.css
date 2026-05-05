@@ -1,0 +1,464 @@
+/* =============================================================================
+   Strata Design System — Foundations  (v2 · editorial register)
+   colors_and_type.css
+
+   Two themes (dark default, light secondary).
+   Two modes (Vereda default editorial-blue, Mestre warm mustard/bronze).
+   Mode is a data-attribute on <html>: data-mode="vereda" | "mestre"
+   Theme is a data-attribute on <html>: data-theme="dark" | "light"
+
+   v2 changes vs v1:
+   - Fonts: Fraunces (variable serif w/ opsz+SOFT axes) / Geist / Geist Mono
+   - Warm grounds (cream in light, warm-charcoal in dark — never clinical)
+   - Editorial accents: Vereda → deep editorial blue, Mestre → warm mustard
+   - Saturated Bloom ramp (editorial accents, not desaturated heatmap)
+   - New primitives: .masthead, .corner-marks, .frame, italic display serif
+   ============================================================================= */
+
+/* ---------------------------------------------------------------------------
+   Webfonts — Fraunces (variable + opsz/SOFT/WONK), Geist VF, Geist Mono VF
+   Self-hosted from assets/fonts/. CSS is at project root, so paths are
+   `assets/fonts/…`. Stylesheets imported from subfolders (e.g.
+   ui_kits/strata-desktop/app.css) resolve these via the importing CSS's URL.
+   --------------------------------------------------------------------------- */
+@font-face {
+  font-family: "Fraunces";
+  src: url("assets/fonts/Fraunces%5BSOFT%2CWONK%2Copsz%2Cwght%5D.ttf") format("truetype-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fraunces";
+  src: url("assets/fonts/Fraunces-Italic%5BSOFT%2CWONK%2Copsz%2Cwght%5D.ttf") format("truetype-variations");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist";
+  src: url("assets/fonts/GeistVF.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist Mono";
+  src: url("assets/fonts/GeistMonoVF.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------------------------------------------------------------------------
+   Base tokens — color
+   --------------------------------------------------------------------------- */
+
+:root,
+:root[data-theme="dark"] {
+  /* Warm-charcoal navy grounds — editorial, not clinical slate. */
+  --bedrock:    oklch(0.18 0.020 250);   /* deep navy-charcoal w/ warm undertone */
+  --stratum:    oklch(0.21 0.020 250);
+  --vein:       oklch(0.24 0.020 250);
+  --surface:    oklch(0.27 0.020 250);
+  --hover:      oklch(0.30 0.020 250);
+  --press:      oklch(0.16 0.020 250);
+
+  /* Foreground — warm-leaning to match grounds */
+  --fg-1:       oklch(0.93 0.010 80);    /* primary — warm cream-white */
+  --fg-2:       oklch(0.74 0.012 80);    /* secondary */
+  --fg-3:       oklch(0.56 0.012 80);    /* tertiary, captions, masthead */
+  --fg-4:       oklch(0.40 0.012 80);    /* disabled */
+
+  /* Borders — hairline */
+  --border-1:   oklch(0.93 0.010 80 / 0.10);
+  --border-2:   oklch(0.93 0.010 80 / 0.20);
+
+  /* Accents — editorial */
+  --accent-vereda:    oklch(0.62 0.14 255);   /* deep editorial blue, lifted for dark */
+  --accent-vereda-fg: oklch(0.78 0.13 255);
+  --accent-mestre:    oklch(0.74 0.13 75);    /* warm mustard / bronze */
+  --accent-mestre-fg: oklch(0.84 0.12 75);
+
+  /* Reference primitives — README-palette territory, used sparingly */
+  --ref-citation:  oklch(0.72 0.10 270);   /* indigo-lavender */
+  --ref-wikilink:  oklch(0.78 0.09 305);   /* lavender */
+
+  /* Semantic */
+  --error:    oklch(0.66 0.12 30);
+  --success:  oklch(0.68 0.10 145);
+
+  /* Bloom — saturated editorial ramp */
+  --bloom-1:  oklch(0.62 0.13 255);   /* deep blue */
+  --bloom-2:  oklch(0.62 0.13 200);   /* teal */
+  --bloom-3:  oklch(0.66 0.13 165);   /* green */
+  --bloom-4:  oklch(0.74 0.13 75);    /* mustard */
+  --bloom-5:  oklch(0.68 0.16 45);    /* bronze/orange */
+  --bloom-6:  oklch(0.64 0.18 25);    /* rust/coral */
+
+  --scrim:    oklch(0.10 0.020 250 / 0.55);
+}
+
+:root[data-theme="light"] {
+  /* Warm cream grounds */
+  --bedrock:    oklch(0.97 0.015 75);    /* warm cream */
+  --stratum:    oklch(0.95 0.015 75);
+  --vein:       oklch(0.93 0.015 75);
+  --surface:    oklch(0.98 0.012 75);
+  --hover:      oklch(0.91 0.018 75);
+  --press:      oklch(0.88 0.020 75);
+
+  --fg-1:       oklch(0.22 0.020 250);
+  --fg-2:       oklch(0.42 0.020 250);
+  --fg-3:       oklch(0.58 0.018 250);
+  --fg-4:       oklch(0.72 0.015 250);
+
+  --border-1:   oklch(0.22 0.020 250 / 0.10);
+  --border-2:   oklch(0.22 0.020 250 / 0.18);
+
+  --accent-vereda:    oklch(0.45 0.14 255);
+  --accent-vereda-fg: oklch(0.38 0.15 255);
+  --accent-mestre:    oklch(0.55 0.15 70);
+  --accent-mestre-fg: oklch(0.46 0.16 65);
+
+  --ref-citation:  oklch(0.50 0.10 270);
+  --ref-wikilink:  oklch(0.52 0.09 305);
+
+  --error:    oklch(0.52 0.14 30);
+  --success:  oklch(0.50 0.10 145);
+
+  --bloom-1:  oklch(0.45 0.14 255);
+  --bloom-2:  oklch(0.48 0.13 200);
+  --bloom-3:  oklch(0.52 0.13 165);
+  --bloom-4:  oklch(0.58 0.15 75);
+  --bloom-5:  oklch(0.55 0.17 45);
+  --bloom-6:  oklch(0.52 0.18 25);
+
+  --scrim:    oklch(0.20 0.020 250 / 0.30);
+}
+
+/* Mode → live accent */
+:root, :root[data-mode="vereda"] {
+  --accent:     var(--accent-vereda);
+  --accent-fg:  var(--accent-vereda-fg);
+  --mode-name:  "vereda";
+}
+:root[data-mode="mestre"] {
+  --accent:     var(--accent-mestre);
+  --accent-fg:  var(--accent-mestre-fg);
+  --mode-name:  "mestre";
+}
+
+/* ---------------------------------------------------------------------------
+   Type — Fraunces (serif, variable opsz + SOFT) / Geist / Geist Mono
+   --------------------------------------------------------------------------- */
+
+:root {
+  --font-serif: "Fraunces", "Iowan Old Style", "Charter", Georgia, serif;
+  --font-sans:  "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-mono:  "Geist Mono", "JetBrains Mono", "SF Mono", "Menlo", "Consolas", monospace;
+
+  /* Variable axis presets for Fraunces */
+  --serif-display:  "opsz" 144, "SOFT" 100, "WONK" 0;
+  --serif-italic:   "opsz" 72,  "SOFT" 60,  "WONK" 0;
+  --serif-body:     "opsz" 18,  "SOFT" 0,   "WONK" 0;
+
+  /* Six type roles */
+  --type-display:   400 28px/1.20  var(--font-serif);
+  --type-h1:        500 20px/1.30  var(--font-sans);
+  --type-h2:        500 15px/1.35  var(--font-sans);
+  --type-body:      400 16px/1.70  var(--font-serif);
+  --type-ui:        400 13px/1.40  var(--font-sans);
+  --type-ui-strong: 500 13px/1.40  var(--font-sans);
+  --type-small:     400 12px/1.45  var(--font-sans);
+  --type-mono:      400 13px/1.55  var(--font-mono);
+  --type-mono-sm:   400 12px/1.50  var(--font-mono);
+
+  --tracking-tight:  -0.01em;
+  --tracking-normal:  0;
+  --tracking-mono:   -0.005em;
+  --tracking-meta:   0.06em;
+}
+
+/* ---------------------------------------------------------------------------
+   Spacing
+   --------------------------------------------------------------------------- */
+:root {
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px;
+  --sp-6:24px; --sp-8:32px; --sp-12:48px; --sp-16:64px;
+}
+
+/* Radii — keep right-angle precision */
+:root { --radius-0:0; --radius-1:3px; --radius-2:6px; }
+
+/* Elevation — depth via tone, not shadow */
+:root, :root[data-theme="dark"] { --shadow-popover:none; --shadow-modal:none; }
+:root[data-theme="light"] {
+  --shadow-popover: 0 1px 0 0 oklch(0.22 0.020 250 / 0.06), 0 4px 12px -2px oklch(0.22 0.020 250 / 0.04);
+  --shadow-modal:   0 1px 0 0 oklch(0.22 0.020 250 / 0.08), 0 8px 24px -4px oklch(0.22 0.020 250 / 0.06);
+}
+
+/* Motion */
+:root { --ease:cubic-bezier(0.2,0.0,0.2,1); --dur-fast:120ms; --dur:160ms; --dur-slow:240ms; }
+
+/* ---------------------------------------------------------------------------
+   Base + role classes
+   --------------------------------------------------------------------------- */
+
+html, body {
+  background: var(--bedrock);
+  color: var(--fg-1);
+  font: var(--type-body);
+  font-variation-settings: var(--serif-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Editorial display — Fraunces at high opsz + high SOFT */
+.t-display {
+  font: 400 56px/1.05 var(--font-serif);
+  font-variation-settings: var(--serif-display);
+  color: var(--fg-1);
+  letter-spacing: -0.02em;
+}
+.t-display-italic {
+  font: 400 56px/1.05 var(--font-serif);
+  font-style: italic;
+  font-variation-settings: var(--serif-italic);
+  color: var(--fg-1);
+  letter-spacing: -0.015em;
+}
+.t-display-sm {
+  font: 400 36px/1.10 var(--font-serif);
+  font-variation-settings: "opsz" 96, "SOFT" 80, "WONK" 0;
+  color: var(--fg-1);
+  letter-spacing: -0.015em;
+}
+
+.t-h1      { font: var(--type-h1);      color: var(--fg-1); letter-spacing: var(--tracking-tight); }
+.t-h2      { font: var(--type-h2);      color: var(--fg-2); }
+.t-body    { font: var(--type-body);    color: var(--fg-1); font-variation-settings: var(--serif-body); }
+.t-ui      { font: var(--type-ui);      color: var(--fg-1); }
+.t-ui-2    { font: var(--type-ui);      color: var(--fg-2); }
+.t-small   { font: var(--type-small);   color: var(--fg-3); }
+.t-mono    { font: var(--type-mono);    color: var(--fg-2); letter-spacing: var(--tracking-mono); }
+.t-mono-sm { font: var(--type-mono-sm); color: var(--fg-3); letter-spacing: var(--tracking-mono); }
+
+/* Notes — reading-first Fraunces body */
+.note h1 { font: 500 28px/1.2 var(--font-serif); font-variation-settings: "opsz" 96, "SOFT" 60; font-style: italic; color: var(--fg-1); margin: var(--sp-6) 0 var(--sp-3); letter-spacing: -0.015em; }
+.note h2 { font: 500 22px/1.25 var(--font-serif); font-variation-settings: "opsz" 72, "SOFT" 50; font-style: italic; color: var(--fg-1); margin: var(--sp-5) 0 var(--sp-2); letter-spacing: -0.01em; }
+.note h3 { font: 500 18px/1.30 var(--font-serif); font-variation-settings: "opsz" 36, "SOFT" 30; color: var(--fg-2); margin: var(--sp-4) 0 var(--sp-2); }
+.note p  { font: var(--type-body); font-variation-settings: var(--serif-body); color: var(--fg-1); margin: 0 0 var(--sp-3); max-width: 72ch; }
+.note ul, .note ol { padding-left: var(--sp-5); margin: 0 0 var(--sp-3); }
+.note li { font: var(--type-body); font-variation-settings: var(--serif-body); color: var(--fg-1); margin: 0 0 var(--sp-1); }
+.note code { font: var(--type-mono-sm); color: var(--fg-1); background: var(--vein); padding: 1px 5px; border-radius: var(--radius-1); }
+.note em, .note i { font-style: italic; font-variation-settings: "opsz" 36, "SOFT" 50; }
+
+/* Code blocks */
+pre, .codeblock {
+  font: var(--type-mono); color: var(--fg-1);
+  background: var(--vein); border: 1px solid var(--border-1);
+  border-radius: var(--radius-1); padding: var(--sp-3) var(--sp-4);
+  overflow-x: auto; letter-spacing: var(--tracking-mono);
+}
+
+/* Reference & wiki-link primitives */
+.ref-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  font: var(--type-mono-sm); color: var(--ref-citation);
+  border-bottom: 1px dotted color-mix(in oklch, var(--ref-citation) 50%, transparent);
+  padding: 0 1px; letter-spacing: var(--tracking-mono);
+  text-decoration: none;
+}
+.wiki-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  font: var(--type-ui); color: var(--ref-wikilink);
+  background: color-mix(in oklch, var(--ref-wikilink) 12%, transparent);
+  padding: 1px 6px; border-radius: var(--radius-1);
+}
+.wiki-chip::before { content: "[["; opacity: 0.5; font-family: var(--font-mono); font-size: 0.9em; }
+.wiki-chip::after  { content: "]]"; opacity: 0.5; font-family: var(--font-mono); font-size: 0.9em; }
+
+/* Bridge — file:line link */
+.bridge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font: var(--type-mono-sm); color: var(--accent);
+  border-bottom: 1px solid color-mix(in oklch, var(--accent) 40%, transparent);
+  padding: 0 1px 1px; cursor: pointer;
+  letter-spacing: var(--tracking-mono);
+  transition: color var(--dur) var(--ease);
+}
+.bridge:hover { color: var(--accent-fg); }
+.bridge::after { content: "→"; font-family: var(--font-mono); opacity: 0.7; }
+
+/* Mode badge */
+.mode-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font: var(--type-ui-strong); color: var(--accent-fg);
+  background: color-mix(in oklch, var(--accent) 16%, transparent);
+  border: 1px solid color-mix(in oklch, var(--accent) 38%, transparent);
+  padding: 3px 8px 3px 7px; border-radius: var(--radius-1);
+  text-transform: lowercase; letter-spacing: 0.02em;
+}
+.mode-badge::before {
+  content: ""; width: 6px; height: 6px; background: var(--accent);
+  border-radius: 50%; display: inline-block;
+}
+
+/* Bloom chip — saturated */
+.bloom {
+  display: inline-flex; align-items: center; gap: 4px;
+  font: var(--type-mono-sm); color: var(--fg-1);
+  padding: 1px 6px; border-radius: var(--radius-1);
+  letter-spacing: var(--tracking-mono);
+  background: color-mix(in oklch, var(--bloom, var(--bloom-3)) 22%, transparent);
+  border: 1px solid color-mix(in oklch, var(--bloom, var(--bloom-3)) 45%, transparent);
+}
+.bloom-1 { --bloom: var(--bloom-1); }
+.bloom-2 { --bloom: var(--bloom-2); }
+.bloom-3 { --bloom: var(--bloom-3); }
+.bloom-4 { --bloom: var(--bloom-4); }
+.bloom-5 { --bloom: var(--bloom-5); }
+.bloom-6 { --bloom: var(--bloom-6); }
+
+/* Frontmatter */
+.frontmatter {
+  font: var(--type-mono-sm); color: var(--fg-2);
+  background: color-mix(in oklch, var(--fg-1) 3%, var(--vein));
+  border-left: 2px solid var(--border-2);
+  padding: var(--sp-3) var(--sp-4);
+  letter-spacing: var(--tracking-mono);
+}
+.frontmatter .key   { color: var(--fg-3); }
+.frontmatter .value { color: var(--fg-1); }
+
+/* Tag */
+.tag {
+  display: inline-flex; align-items: center;
+  font: var(--type-mono-sm); color: var(--fg-2);
+  background: var(--vein); border: 1px solid var(--border-1);
+  padding: 1px 6px 1px 5px; border-radius: var(--radius-1);
+  letter-spacing: var(--tracking-mono);
+}
+.tag::before { content: "#"; color: var(--fg-3); margin-right: 2px; }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font: var(--type-ui-strong); color: var(--fg-1);
+  background: var(--surface);
+  border: 1px solid var(--border-2); border-radius: var(--radius-1);
+  padding: 6px 12px; cursor: pointer;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.btn:hover { background: var(--hover); }
+.btn:active { background: var(--press); }
+.btn:focus-visible { outline: 1px solid var(--accent); outline-offset: 1px; }
+.btn[disabled], .btn:disabled { color: var(--fg-4); cursor: not-allowed; }
+
+.btn-primary {
+  color: var(--accent-fg);
+  background: color-mix(in oklch, var(--accent) 18%, var(--surface));
+  border-color: color-mix(in oklch, var(--accent) 45%, transparent);
+}
+.btn-primary:hover { background: color-mix(in oklch, var(--accent) 28%, var(--surface)); }
+
+.btn-ghost { background: transparent; border-color: transparent; color: var(--fg-2); }
+.btn-ghost:hover { background: var(--hover); color: var(--fg-1); }
+
+/* ============================================================================
+   v2 EDITORIAL PRIMITIVES
+   ============================================================================ */
+
+/* Masthead — hyphen-prefixed metadata strip ("workspace - / vault - / model -")
+   The magazine masthead. Always-present, low-key. */
+.masthead {
+  display: flex; align-items: baseline; flex-wrap: wrap;
+  gap: 0;
+  font: var(--type-mono-sm);
+  color: var(--fg-3);
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border-1);
+  padding: 8px 16px;
+}
+.masthead .col {
+  display: inline-flex; align-items: baseline; gap: 6px;
+  padding-right: 18px; margin-right: 18px;
+  border-right: 1px solid var(--border-1);
+}
+.masthead .col:last-child { border-right: 0; margin-right: 0; padding-right: 0; }
+.masthead .lbl { color: var(--fg-3); }
+.masthead .lbl::after { content: " —"; opacity: 0.55; }
+.masthead .val { color: var(--fg-2); text-transform: none; letter-spacing: var(--tracking-mono); }
+
+/* Frame — thin 1px border with optional corner marks (the "SOLITARY" / "retro" frame) */
+.frame {
+  position: relative;
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-1);
+  background: var(--stratum);
+}
+.frame.no-bg { background: transparent; }
+
+/* Corner marks — small + glyph anchored at each frame corner */
+.frame.marks::before, .frame.marks::after,
+.frame.marks > .mark-tl, .frame.marks > .mark-br {
+  position: absolute;
+  font: 400 11px/1 var(--font-mono);
+  color: var(--fg-3);
+  pointer-events: none;
+  letter-spacing: 0;
+}
+.frame.marks::before { content: "+"; top: 6px; left: 8px; }
+.frame.marks::after  { content: "+"; top: 6px; right: 8px; }
+.frame.marks > .mark-tl { content: "+"; bottom: 6px; left: 8px; }
+.frame.marks > .mark-br { bottom: 6px; right: 8px; }
+
+/* "Section" corner glyph — § for editorial moments */
+.section-glyph {
+  font: 400 14px/1 var(--font-serif);
+  font-variation-settings: "opsz" 36, "SOFT" 60;
+  color: var(--fg-3);
+  font-style: italic;
+}
+
+/* Bloom rail — vertical 4px solid bar, used on note-preview left edge */
+.bloom-rail {
+  position: absolute; top: 0; bottom: 0; left: 0;
+  width: 4px;
+  background: var(--bloom, var(--accent));
+}
+
+/* Italic display serif — pull-quote / generated-note title voice */
+.italic-display {
+  font: 400 44px/1.10 var(--font-serif);
+  font-style: italic;
+  font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+  color: var(--fg-1);
+  letter-spacing: -0.02em;
+}
+
+/* Three-column hyphen header — like "Darling - / Don't - / You -" */
+.hyphen-cols {
+  display: grid; grid-auto-flow: column; grid-auto-columns: 1fr;
+  gap: var(--sp-6);
+  font: var(--type-mono-sm); color: var(--fg-3);
+  letter-spacing: var(--tracking-meta); text-transform: uppercase;
+}
+.hyphen-cols .col { display: flex; flex-direction: column; gap: 4px; }
+.hyphen-cols .col .lbl::after { content: " —"; opacity: 0.55; }
+.hyphen-cols .col .val { color: var(--fg-2); text-transform: none; letter-spacing: var(--tracking-mono); }
+
+/* Editorial pull-quote (italic Fraunces, max 30ch, hung punctuation feel) */
+.pullquote {
+  font: 400 32px/1.20 var(--font-serif);
+  font-style: italic;
+  font-variation-settings: "opsz" 96, "SOFT" 80, "WONK" 0;
+  color: var(--fg-1);
+  letter-spacing: -0.015em;
+  max-width: 26ch;
+}
+
+/* Saturated accent block — single bar across the top of editorial moments */
+.accent-bar { height: 4px; background: var(--accent); }

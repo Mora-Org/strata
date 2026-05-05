@@ -40,3 +40,20 @@ Mudanças com impacto observável. Granularidade: alguém externo deveria conseg
 - **ADR-0004 (draft)** criado — `Customization scope: extensible surfaces vs locked product rules` — formaliza a linha contratual entre o que usuário pode mudar (tools, providers, comandos, themes, skills, models.json, paths) e o que é regra dura travada (Vereda default, Mestre não persiste, vault inbox-only, sem fallback silente, frontmatter canônico, telemetria opt-in, mode = accent shift). Promove pra `ativo` em M4.
 - `backlog.md` reorganizado: M4 vira "Tools opt-in + frontmatter rich" (web search Brave + vault reader + frontmatter completo + customization guide + Mode Router validation de tools customizadas)
 - `decisions.md` acrescenta entrada 2026-05-05 com as 3 decisões
+
+## 2026-05-05 (final, M0.5.c) — DS + M1+M2 codificados no repo
+- **`design/` criada no repo** com DS v2 completo (extraído do Strata-handoff M1+M2):
+  - `design/colors_and_type.css` — tokens canônicos (oklch, type families, primitives)
+  - `design/README.md` — guia visual completo (skill manifest)
+  - `design/SKILL.md` — Claude Code skill manifest pra reutilizar DS em outros projetos
+  - `design/assets/fonts/` — 4 fontes variable: `Fraunces[SOFT,WONK,opsz,wght].ttf` + italic variant + `GeistVF.woff2` + `GeistMonoVF.woff2` + 2 OFL.txt
+  - `design/preview/` — 12 review cards (formato editorial spread)
+  - `design/ui_kits/strata-desktop/` — kit interativo (HTML/CSS/JSX) + 12 screens em `screens/` (M1: 6 + M2: 6)
+- **`.speckit/product/design-system.md`** (NOVO) — spec canônico enxuto, ~250 linhas, contrato entre speckit e `design/`
+- **ADR-0003** (status: ativo) — `Editorial register chosen as Strata's visual language`. Documenta 3 DS rejeitados (Atlas/Glyph/Metis), 7 posters de referência, escolhas finais de fonte/cor/primitivos, mitigações e relação com ADRs anteriores
+- **CONTEXT_DIRECTOR.md §3** — row "Design System" adicionada à stack travada; §5 mapa atualizado com `design/` e `.gitignore`
+- **CLAUDE.md** — adicionada linha "Antes de escrever UI/CSS"; Stack inclui Design system row; Arquitetura tree atualizada com `design/`
+- **README.md** — Stack table tem row "Design system"
+- **plans/current.md** — M0.5.b marcada ✅ (M1+M2); M0.5.c marcada ✅ FECHADA com 9 entregas detalhadas; M0.5.d criada (M3 pendente quota Claude Design)
+- **plans/backlog.md** — reordenada: M0.5.b/c marcadas done; M0.5.d adicionada antes de M0.5.e (codificação M3); M5 ganha bullet sobre a11y audit
+- M3 screens (branch tree signature + palette + fork) ficam pra **M0.5.d** quando quota Claude Design voltar (próxima semana)

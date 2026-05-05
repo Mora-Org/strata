@@ -1,0 +1,30 @@
+<!doctype html>
+<html data-theme="dark" data-mode="vereda" lang="en">
+<head>
+  <meta charset="utf-8" /><title>Preview — Active conversation — tool call</title>
+  <link rel="stylesheet" href="_screen-card.css" />
+</head>
+<body>
+  <div class="page">
+    <div class="page-header">
+      <div>
+        <div class="page-eyebrow">m2 — screen 2.6</div>
+        <h1 class="page-title">Active conversation — tool call</h1>
+      </div>
+      <div class="page-meta">
+        <div class="col"><span class="lbl">surface</span><span class="val">main</span></div>
+        <div class="col"><span class="lbl">mode</span><span class="val">mestre</span></div>
+        <div class="col"><span class="lbl">size</span><span class="val">1280×900</span></div>
+      </div>
+    </div>
+    <div class="page-rule"></div>
+    <div class="screen-frame">
+      <span class="corner-tl">+</span><span class="corner-tr">+</span><span class="corner-bl">+</span><span class="corner-br">+</span>
+      <iframe src="../ui_kits/strata-desktop/screens/active-conversation-with-tool-call.html" title="Active conversation with tool call"></iframe>
+    </div>
+    <div class="notes">
+      <strong>Two tool calls inline within a Strata reply.</strong> Each is a self-contained card with a 4px accent rail at left (mustard for ongoing). Header is a single mono row: TOOL_NAME · summary · chevron. Collapsed: just the header. Expanded: arguments (key/value mono), then <code>result</code> (boxed in <code>--bedrock</code>, fixed 320px max-height with native scroll, mono with <code>tracking-mono</code>). Truncation note in italic mono. The reply's prose continues <em>around</em> the tool calls — they're inline content, not modal. The pattern carries from CLI tool-call output (line numbers, args-then-result, italic truncation marker).
+    </div>
+  </div>
+</body>
+</html>
