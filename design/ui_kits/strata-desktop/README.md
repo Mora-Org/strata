@@ -5,8 +5,9 @@ Hi-fi recreation of the Strata desktop app. Use this as the source of truth when
 ## Files
 
 - `index.html` — canonical surface (screen 1.2, Vereda dark). The single source of compositional truth — the rest of the screens defer to it.
+- `index-branched.html` — canonical surface with the **branch tree column** visible (3 branches). The M3 signature view.
 - `app.css` — layout, components, primitives. Imports `../../colors_and_type.css`.
-- `screens/` — twelve standalone screens (six M1 + six M2). Each is self-contained HTML that links back to `../app.css`.
+- `screens/` — nineteen standalone screens (six M1 + six M2 + seven M3). Each is self-contained HTML that links back to `../app.css`.
 - `*.jsx` — React component split (Composer, Header, Message, Sidebar, Settings, NotePreview, ModeConfirm, primitives). Useful when porting into a real app.
 - `data.js` — sample conversation, vault, workspace data shared across the JSX components.
 
@@ -60,4 +61,35 @@ Six additional surfaces that introduce mode-switching, the right-aside note prev
 | `.toolcall-status-dots` | 3-dot streaming indicator scoped to a tool call (uses the existing `sediment` keyframes). |
 | `.diff` + `.diff-line.added/removed/context` | Unified diff renderer with marker / line-no / text columns. |
 | `.mode-modal-divider` + `.mode-modal-tools` | Hyphen-rule + tool capability list, used inside the mode-confirm body. |
+
+## M3 — Signature primitive + ergonomics
+
+Three surfaces that turn Strata from a calm reader-writer into a product with its own visual DNA. The **branch tree** is the hero — it is the literal visual rendering of the manifesto's geological metaphor.
+
+| Screen | Notes |
+|---|---|
+| 3.1 Branch tree (2 branches) | Minimal materialization — the column appears the moment the first fork happens. Two bars, one junction. |
+| 3.1 Branch tree (4 branches) | Full range: depth across three columns, recency saturation, an abandoned mid-branch (faded, ends at 68%), a freshly forked recent branch (full saturation, hovered tooltip showing). |
+| 3.2 Conversation + fork hover | A Strata reply with the `⤴ ⌥+F` affordance forced visible via `.fork-action.shown`. In practice it appears only on hover with a 200ms delay. |
+| 3.3 Palette — default | All seven commands listed: `/vereda` `/mestre` `/efemero` `/sem-nota` `/tree` `/fork` `/help`. First row selected (hover bg). |
+| 3.3 Palette — filtered | User typed `/me`. Section label reads "2 matches". `/mestre` and `/sem-nota` visible with the `me` chars highlighted (accent-tinted pill). |
+| 3.3 Palette — no match | User typed `/xyz`. Body collapses to a single centered italic line: *"Nenhum comando combina. — esc pra fechar"* in Fraunces italic. |
+
+### M3 primitives added to `app.css`
+
+| Class | Use |
+|---|---|
+| `.app.with-tree` | Grid modifier — inserts the 80px tree column between sidebar and main. Combines with `.with-aside` for 4-column layouts. |
+| `.branch-tree` + `.branch-canvas` | Tree column shell. Bars are absolutely positioned with `top`/`bottom` percentages so they scale with viewport height. |
+| `.branch-bar` + `.bb-N` + `.col-N` + saturation tier | One branch. Three orthogonal modifiers: Bloom color (1–6), depth column (1–4), saturation (`.recent` / `.session` / `.older`). |
+| `.branch-junction` | 6×6 hairline SVG L-arc connecting parent bar's right edge to child bar's top. Uses inline `<path>` with `stroke: var(--border-2)`. |
+| `.branch-active-indicator` | The small `▶` caret next to the active branch's top, in the current `--accent`. |
+| `.branch-tooltip` | Floating tooltip with name + meta. Positioned outside the 80px column (spills right into main) and rendered with a small arrow pointing back to the bar. |
+| `.fork-action` (inside `.msg`) | Hover-only affordance with 200ms transition-delay. Use `.shown` to force visible for screenshots. |
+| `.banner-fork` | Editorial inline confirmation after a fork. Bloom-2 left-rail; same pattern as `.banner-success`. |
+| `.palette-scrim` + `.palette-frame` | ⌘K overlay frame. 560px wide, ~22vh from top, scrim at 70% bedrock. Frame has `.frame.marks`-style `+` corners. |
+| `.palette-input-wrap` + `.palette-slash` + `.palette-input` / `.palette-input-typed` | Mono input with `/` prefix. `.palette-input-typed` is a static visual variant with a faux caret (for screenshots). |
+| `.palette-row` + `.cmd` + `.desc` | Two-column row: mono command name + italic Fraunces description. `.cmd .match` highlights the filtered substring. |
+| `.palette-no-match` | Single centered italic Fraunces line. No illustration. |
+| `.palette-footer` | Keyboard hint footer with `<kbd>` chips. |
 

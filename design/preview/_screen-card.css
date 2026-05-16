@@ -38,3 +38,30 @@ html, body { margin: 0; background: var(--bedrock); color: var(--fg-1); min-heig
 .notes strong { color: var(--fg-1); font-weight: 500; }
 .notes ul { padding-left: 18px; margin: 8px 0 0; }
 .notes li { margin-bottom: 4px; }
+
+
+/* M3 — multi-frame layouts for surface state-ranges */
+.screen-frame-pair, .screen-frame-trio {
+  display: grid; gap: 24px;
+  margin-bottom: 22px;
+}
+.screen-frame-pair { grid-template-columns: 1fr 1fr; }
+.screen-frame-trio { grid-template-columns: 1fr 1fr 1fr; }
+
+.screen-frame.sm {
+  width: auto; height: 430px;
+}
+.screen-frame.sm iframe {
+  width: 1280px; height: 800px;
+  transform: scale(0.4375); /* 560 / 1280 */
+  transform-origin: 0 0;
+}
+.screen-frame .caption {
+  position: absolute; top: 10px; left: 14px;
+  font: var(--type-mono-sm); color: var(--fg-3);
+  letter-spacing: var(--tracking-meta); text-transform: uppercase;
+  z-index: 10;
+  background: color-mix(in oklch, var(--bedrock) 88%, transparent);
+  padding: 3px 8px; border: 1px solid var(--border-1);
+}
+.screen-frame .caption::after { content: " —"; opacity: 0.55; }

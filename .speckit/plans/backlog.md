@@ -10,11 +10,11 @@ Ordem reflete prioridade. Itens sem ordem ainda ficam em "Não-priorizado".
 
 ## Próximas iterações
 
-1. ~~**M0.5.b**~~ ✅ M1+M2 entregues 2026-05-05 (M3 ⏸️ quota)
+1. ~~**M0.5.b**~~ ✅ M1+M2 entregues 2026-05-05; M3 entregue 2026-05-16 — todas 18 screens design completas
 2. ~~**M0.5.c**~~ ✅ Codificação M1+M2 + DS no repo — fechada 2026-05-05
-3. **M0.5.d** — Screens M3 via Claude Design (signature primitive: branch tree + fork-from-msg + Cmd+K palette) — quando quota voltar (próxima semana)
-4. **M0.5.e** — Codificação M3 (iteração pequena que adiciona ao `design/` existente)
-5. **M1** — Scaffolding Tauri + fork Pi + reimplementação das M1-screens em React/TS real + chat hello-world Ollama
+3. ~~**M0.5.d**~~ ✅ Screens M3 entregues (branch tree signature + fork-from-msg + Cmd+K palette) — 2026-05-16
+4. ~~**M0.5.e**~~ ✅ Codificação M3 (adicionada ao `design/` existente sem sobrescrever) — fechada 2026-05-16
+5. **M1** ← **PRÓXIMA ATIVA** — Scaffolding Tauri + fork Pi + reimplementação dos 18 screens em React/TS real + chat hello-world Ollama
 6. **M2** — Mode Router (Vereda/Mestre) + bloqueio de tools de escrita em Vereda + Note Builder + Vault Writer
 7. **M3** — Session branch tree (signature primitive) + Command palette (Cmd+K) + fork-from-message — implementação React/Tauri sobre os screens já desenhados em M0.5.d
 8. **M4** — **Tools opt-in + frontmatter rich** (extensibility wave). Inclui:

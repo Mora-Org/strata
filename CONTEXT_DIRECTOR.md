@@ -45,7 +45,7 @@ Strata é **local-first**, **vault-first**, **Vereda-first**. Toda decisão téc
 | Vault | Obsidian (markdown + YAML frontmatter) | Markdown é durável (manifesto §VII — "registro geológico"). Sem lock-in proprietário. |
 | Testes | Vitest (unit) + Playwright (e2e) + TestSprite (QA) | Vitest é o padrão moderno de Vite. Playwright cobre Tauri WebView. TestSprite é decisão Mora. |
 | Superfícies | CLI (`strata`) + GUI (Tauri) | "Terminal ou janela" — usuário escolhe canal. Mesmo core, mesmo Mode Router. Ver [`.speckit/architecture/ide-integration.md`](.speckit/architecture/ide-integration.md) e [ADR-0002](.speckit/architecture/adr/ADR-0002-strata-as-fork-app-not-extension.md). |
-| Design System | Strata DS v2 (editorial register — Fraunces / Geist / Geist Mono variable, OFL · warm grounds · editorial-blue Vereda · warm-mustard Mestre · saturated Bloom ramp) | Editorial poster register (zine/livro técnico, não OS chrome). Identidade própria por produto Mora. 12 screens M1+M2 codificadas. Ver [`design/`](design/) + [`.speckit/product/design-system.md`](.speckit/product/design-system.md). [ADR-0003](.speckit/architecture/adr/ADR-0003-editorial-register.md). |
+| Design System | Strata DS v2 (editorial register — Fraunces / Geist / Geist Mono variable, OFL · warm grounds · editorial-blue Vereda · warm-mustard Mestre · saturated Bloom ramp) | Editorial poster register (zine/livro técnico, não OS chrome). Identidade própria por produto Mora. **18 screens M1+M2+M3 codificadas** (M0.5 completa 2026-05-16). Ver [`design/`](design/) + [`.speckit/product/design-system.md`](.speckit/product/design-system.md). [ADR-0003](.speckit/architecture/adr/ADR-0003-editorial-register.md). |
 
 > **Cesar:** os "por quês" acima são inferidos do manifesto + CLAUDE.md. Edite o que estiver errado — essa coluna é doutrina, não pode estar imprecisa.
 
@@ -65,7 +65,7 @@ Strata é **local-first**, **vault-first**, **Vereda-first**. Toda decisão téc
 
 ## §5. Mapa do Ecossistema
 
-Estado em **2026-05-05**:
+Estado em **2026-05-16**:
 
 ```
 strata/
@@ -74,12 +74,12 @@ strata/
 ├── README.md             [existe] overview público
 ├── CONTEXT_DIRECTOR.md   [existe] este documento
 ├── .gitignore            [existe] bloqueia *.zip + design system zips
-├── .speckit/             [existe] specs vivas, planos, tracking, ADRs
-├── design/               [existe] DS v2 editorial + 12 screens M1+M2 + 4 fontes variable + OFL
+├── .speckit/             [existe] specs vivas, planos, tracking, 4 ADRs
+├── design/               [existe] DS v2 editorial + 18 screens M1+M2+M3 + 4 fontes variable + 3 canonical screenshots
 └── (sem código de produção ainda — M1 dev começa o scaffolding Tauri)
 ```
 
-Próximo marco: M0.5.d (3 screens M3 quando quota Claude Design voltar) + M1 dev (scaffolding Tauri + fork Pi + reimplementação dos 12 screens em React/TS real). Tracking em [`.speckit/plans/current.md`](.speckit/plans/current.md).
+**M0.5 fechada.** Próximo marco: M1 dev (scaffolding Tauri + Vite + fork Pi + reimplementação dos 18 screens em React/TS real, com `design/` como referência visual). Tracking em [`.speckit/plans/current.md`](.speckit/plans/current.md).
 
 ---
 

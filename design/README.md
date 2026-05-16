@@ -20,19 +20,30 @@ strata-design/
 │  ├─ strata-mark.svg          ← stratified glyph (4 layered bars)
 │  ├─ strata-wordmark.svg      ← italic-display Fraunces lockup
 │  ├─ mora-wordmark.svg        ← parent brand
-│  └─ desktop-vereda.png       ← canonical screenshot of screen 1.2
+│  ├─ desktop-vereda.png       ← canonical screenshot of screen 1.2
+│  ├─ desktop-mestre.png       ← Mestre variant (M2)
+│  └─ desktop-branched.png     ← signature view with branch tree (M3)
 ├─ preview/                    ← small reference cards for review
 │  ├─ screen-empty-state.html         ← 1.1 first session
 │  ├─ screen-active-conversation.html ← 1.2 canonical thread
 │  ├─ screen-streaming.html           ← 1.3 sediment-dot indicator
 │  ├─ screen-settings.html            ← 1.4 editorial colofão
 │  ├─ screen-workspace-picker.html    ← 1.5 folder selector
-│  └─ screen-connection-lost.html     ← 1.6 inline error banner
+│  ├─ screen-connection-lost.html     ← 1.6 inline error banner
+│  ├─ screen-mode-confirm-*.html      ← 2.2 mode-router modal (×2)
+│  ├─ screen-active-conversation-mestre.html        ← 2.3 same shell, mestre accent
+│  ├─ screen-active-conversation-with-note-preview  ← 2.4 right aside, bloom rail
+│  ├─ screen-active-conversation-with-tool-call     ← 2.6 inline tool surface
+│  ├─ screen-active-conversation-with-diff          ← 2.7 proposed diff + approval
+│  ├─ screen-branch-tree.html         ← 3.1 signature primitive (2 + 4 branches)
+│  ├─ screen-fork-interaction.html    ← 3.2 hover action on a message
+│  └─ screen-command-palette.html     ← 3.3 ⌘K · default + filtered + no-match
 └─ ui_kits/
    └─ strata-desktop/          ← full hi-fi recreation; lift from here
       ├─ index.html            ← canonical surface (screen 1.2, Vereda dark)
+      ├─ index-branched.html   ← canonical + branch tree visible (M3 signature)
       ├─ app.css               ← layout + component CSS
-      ├─ screens/              ← all twelve screens (M1 + M2), standalone
+      ├─ screens/              ← all nineteen screens (M1 + M2 + M3), standalone
       ├─ Composer.jsx, Header.jsx, Message.jsx, Sidebar.jsx,
       │  Settings.jsx, NotePreview.jsx, ModeConfirm.jsx, primitives.jsx
       └─ data.js
@@ -198,3 +209,37 @@ Milestone 2 introduces the surfaces that turn Strata from a reader into a writer
 | 2.7 | **Active + proposed diff** | Unified diff inside an `edit_file` tool call, with Reject / Edit first / Approve & write. Plus the success banner from M1. |
 
 See `preview/screen-mode-confirm-*.html`, `preview/screen-active-conversation-*.html` for review cards. Standalone screens are in `ui_kits/strata-desktop/screens/`.
+
+---
+
+## Three M3 surfaces — signature primitive + ergonomics
+
+Milestone 3 is the milestone that gives Strata its identity. The **session branch tree** materializes the geological metaphor literally — every fork is a sediment layer, every depth a new column, every recency a saturation step. Without it, Strata is just another chat-with-vault product. With it, the entire DS — sediment grounds, tonal steps, restraint, Bloom ramp — pays off.
+
+| # | Screen | Purpose |
+|---|---|---|
+| 3.1 | **Session branch tree** *(signature)* | 80px column between sidebar and main, materialized only after the first fork. Each branch = a vertical Bloom-colored bar; depth = horizontal position; recency = saturation. Hairline L-arc junctions, ▶ active indicator, hover tooltips that spill into the main column. |
+| 3.2 | **Fork from message** | Hover-only `⤴ ⌥+F` affordance with 200ms delay. No always-visible button. On click, branches the conversation from that message and triggers an inline editorial confirmation. |
+| 3.3 | **Command palette (⌘K)** | 560px overlay frame.marks centered ~22vh from top. Two typefaces in one row: mono command name + italic Fraunces description. Filtering highlights matched chars with an accent-tinted pill. No-match state is one centered italic line. |
+
+### Branch tree — why this is the signature
+
+The manifesto says: *"você pode ler a história de milhões de anos em cortes de rocha porque cada época deixou sua marca em camadas."* The branch tree is the literal visual rendering of that idea inside the product. **Don't optimize it for discoverability or obviousness** — optimize it for the moment when a user notices it after their 5th fork and realizes: *"oh — this is what strata meant."*
+
+### M3 primitives added to `app.css`
+
+| Class | Use |
+|---|---|
+| `.app.with-tree` | App-shell modifier — inserts an 80px tree column between sidebar and main. Combines with `.with-aside` for the 4-column variant. |
+| `.branch-tree` + `.branch-canvas` | The tree column. Bars are positioned absolutely inside the canvas using `top`/`bottom` percentages so they scale with viewport height. |
+| `.branch-bar` + `.bb-1`–`.bb-6` + `.col-1`–`.col-4` + `.recent`/`.session`/`.older` | A branch bar. Three orthogonal modifiers: Bloom color, depth column, saturation tier. |
+| `.branch-junction` | 6×6 inline-SVG L-arc — connects parent bar's right edge to child bar's top. |
+| `.branch-active-indicator` | The small ▶ caret next to the active branch's top, in the current `--accent`. |
+| `.branch-tooltip` | Floating tooltip with name + meta — anchored to a bar but rendered to the right of the 80px column. |
+| `.fork-action` (inside `.msg`) | Hover affordance at the right edge of any message. `opacity: 0` by default, fades in 200ms after hover-in. |
+| `.banner-fork` | Inline editorial confirmation after a fork. Bloom-2 left-rail, serif body. Same pattern as `.banner-success`. |
+| `.palette-scrim` + `.palette-frame` + `.palette-input-wrap` | ⌘K overlay frame. 560px wide, ~22vh from top, scrim at 70% bedrock. |
+| `.palette-row` + `.cmd` + `.desc` | Two-column row: mono command + italic-Fraunces description. The typographic contrast IS the design. |
+| `.palette-no-match` | Single centered italic line — no illustration, no panel. |
+
+See `preview/screen-branch-tree.html`, `preview/screen-fork-interaction.html`, `preview/screen-command-palette.html` for review cards. Standalone screens live in `ui_kits/strata-desktop/screens/branch-tree-*.html`, `conversation-with-fork-hover.html`, and `command-palette-*.html`.

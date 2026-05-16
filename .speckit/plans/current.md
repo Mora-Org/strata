@@ -63,20 +63,41 @@ status: ativo
 - [x] `README.md` Stack table atualizado com row "Design system"
 - [x] `decisions.md`, `patch-notes.md`, `current.md`, `backlog.md` atualizados
 
-#### M0.5.d — Screens M3 (signature + palette) ⏸️ AGUARDA QUOTA CLAUDE DESIGN
-- 3 surfaces pendentes: branch tree (signature primitive), fork-from-message, command palette (Cmd+K)
-- Spec já pronta em [`m05-screens-m3.md`](m05-screens-m3.md)
-- Quando quota voltar: nova conversa Claude Design (mesma estratégia M1/M2), output adicionado ao `design/` existente
-- Codificação será iteração pequena (M0.5.e) ou direto na M0.5.d
+#### M0.5.d — Screens M3 ✅ ENTREGUES 2026-05-16
+- 6 screens novos via Claude Design (mesma conversa do M1+M2):
+  - `branch-tree-2-branches.html` + `branch-tree-4-branches.html` — **signature primitive** (sediment columns por Bloom ramp, NÃO git-graph)
+  - `conversation-with-fork-hover.html` — fork interaction (hover `⤴ ⌥+F`)
+  - `command-palette-default.html` + `command-palette-filtered.html` + `command-palette-no-match.html` — Cmd+K overlay editorial
+- 3 novos preview cards: `screen-branch-tree.html`, `screen-fork-interaction.html`, `screen-command-palette.html`
+- Novo screenshot canonical: `desktop-branched.png` (canonical surface com branch tree column ativa, 4 branches)
+- Bonus: `index-branched.html` mostrando canonical surface branched separado
 
-## Próxima iteração (preview)
+#### M0.5.e — Codificação M3 ✅ FECHADA 2026-05-16
+- Backup: `~/Documents/strata-design-backups/handoff-m3-2026-05-16.zip` (1.87 MB)
+- Adicionados ao `design/` sem sobrescrever M1+M2:
+  - 6 screens em `design/ui_kits/strata-desktop/screens/`
+  - 3 preview cards em `design/preview/`
+  - `desktop-branched.png` em `design/assets/` E nova pasta `design/scratch/`
+  - `design/ui_kits/strata-desktop/index-branched.html`
+- Files atualizados pelo Claude Design: `design/README.md`, `design/ui_kits/strata-desktop/README.md`, `design/ui_kits/strata-desktop/app.css` (novos estilos branch tree + palette), `design/preview/_screen-card.css`
+- **Total: 18 screens** (M1: 6 + M2: 6 + M3: 6) + 15 preview cards
+- Specs atualizadas: `design-system.md` (Pendente → Completo), `CONTEXT_DIRECTOR §3` (12 → 18 screens), `CLAUDE.md` (idem)
 
-**M1 — Scaffolding Tauri + Pi** (começa só após M0.5 fechar)
+### M0.5 closed: 2026-05-16 — visual foundation completa ✅
+
+---
+
+## Próxima iteração: M1 — Scaffolding Tauri + Pi (ATIVA)
+**Início estimado:** quando você der "vai"
+**Critério de fechamento:** chat hello-world Ollama rodando em janela Tauri com layout 1.2 (active conversation Vereda) reconhecível.
+
+### Entregas previstas
 - `npm init`, Vite + React 19 + TS + Tailwind v3
 - `tauri init` (v2)
 - Fork manual do Pi pra `src/lib/pi/`
-- Token bridge: importa `design/colors_and_type.css` como single source of truth → gera Tailwind config a partir dele (não duplicar)
-- **Reimplementa as M1-screens** do kit Claude Design em React/TS real (kit é referência, não runtime)
+- Token bridge: importa `design/colors_and_type.css` como single source of truth → gera Tailwind config a partir dele (não duplicar tokens)
+- @font-face apontando pra `design/assets/fonts/` (mesma estratégia do kit)
+- **Reimplementa as M1-screens** do kit `design/ui_kits/strata-desktop/screens/` em React/TS real (kit é referência, não runtime)
 - "Hello world" no chat: usuário digita, Ollama responde, masthead com workspace/vault/model
-- Sem Mode Router funcional (Vereda só visualmente)
+- Sem Mode Router funcional ainda (Vereda só visualmente — bloqueio efetivo de tools vem em M2)
 - Sem nota gerada ainda (vem em M2)

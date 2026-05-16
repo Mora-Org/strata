@@ -57,3 +57,22 @@ Mudanças com impacto observável. Granularidade: alguém externo deveria conseg
 - **plans/current.md** — M0.5.b marcada ✅ (M1+M2); M0.5.c marcada ✅ FECHADA com 9 entregas detalhadas; M0.5.d criada (M3 pendente quota Claude Design)
 - **plans/backlog.md** — reordenada: M0.5.b/c marcadas done; M0.5.d adicionada antes de M0.5.e (codificação M3); M5 ganha bullet sobre a11y audit
 - M3 screens (branch tree signature + palette + fork) ficam pra **M0.5.d** quando quota Claude Design voltar (próxima semana)
+
+## 2026-05-16 (M0.5.d + M0.5.e) — M3 entregue e codificada · M0.5 fechada
+- **Backup salvo:** `~/Documents/strata-design-backups/handoff-m3-2026-05-16.zip` (1.87 MB)
+- **6 novos screens em `design/ui_kits/strata-desktop/screens/`:**
+  - `branch-tree-2-branches.html` + `branch-tree-4-branches.html` (signature primitive — sediment columns, NÃO git-graph)
+  - `conversation-with-fork-hover.html` (interaction `⤴ ⌥+F`)
+  - `command-palette-default.html` + `command-palette-filtered.html` + `command-palette-no-match.html` (Cmd+K overlay editorial)
+- **3 novos preview cards em `design/preview/`:** `screen-branch-tree.html`, `screen-fork-interaction.html`, `screen-command-palette.html`
+- **Novo canonical screenshot:** `desktop-branched.png` em `design/assets/` E `design/scratch/` (pasta scratch/ criada)
+- **Bonus:** `design/ui_kits/strata-desktop/index-branched.html` (canonical surface com branch tree column ativa, separado do index.html original)
+- **Files atualizados pelo Claude Design:** `design/README.md` (lista M3), `design/ui_kits/strata-desktop/README.md`, `design/ui_kits/strata-desktop/app.css` (novos estilos branch tree + palette), `design/preview/_screen-card.css`
+- **Specs atualizadas:**
+  - `.speckit/product/design-system.md`: "Pendente (M0.5.d)" → "M0.5 completa" com tabela das 18 screens; line de screen count "12 arquivos M1+M2" → "18 arquivos M1+M2+M3"
+  - `CONTEXT_DIRECTOR.md §3` row Design System: "12 screens M1+M2" → "18 screens M1+M2+M3 (M0.5 completa 2026-05-16)"
+  - `CLAUDE.md`: Stack row + "Antes de escrever UI/CSS" — ambos atualizados pra 18 screens
+  - `plans/current.md`: M0.5.d ✅ + M0.5.e ✅ + M0.5 closed 2026-05-16; M1 dev passa a ser "Próxima iteração ATIVA" (não "preview")
+  - `plans/backlog.md`: M0.5.d/e marcadas done; M1 promovida pra próxima ativa
+- **Total: 18 screens** (M1: 6 + M2: 6 + M3: 6) + 15 preview cards + 3 canonical screenshots
+- **M0.5 inteira fechada** — próximo movimento é **M1 dev** (primeiro código de produção)

@@ -213,17 +213,23 @@ Default sempre: `vereda` (regra dura §4 — toda nova sessão começa em Vereda
 
 1. **Tokens:** importar `design/colors_and_type.css` em `src/index.css` (single source of truth — não duplicar tokens em Tailwind config; gerar Tailwind config dos tokens)
 2. **Components:** reimplementar JSX do `design/ui_kits/strata-desktop/` (Composer.jsx, Header.jsx, Message.jsx, Sidebar.jsx, Settings.jsx, NotePreview.jsx, ModeConfirm.jsx) em React 19 real (Vite + Tauri 2 + TS)
-3. **Screens:** `design/ui_kits/strata-desktop/screens/` (12 arquivos M1+M2) é referência visual canônica
+3. **Screens:** `design/ui_kits/strata-desktop/screens/` (18 arquivos M1+M2+M3) é referência visual canônica. Bonus: `index-branched.html` mostra canonical surface com branch tree column ativa.
 4. **Fonts:** `@font-face` apontando pra `design/assets/fonts/` (relative path do build)
 
 ---
 
-## Pendente (M0.5.d — quando quota Claude Design voltar)
+## M0.5 completa (2026-05-16)
 
-3 screens M3 ainda não desenhadas — ficam pendentes:
+Todas as **18 screens** M1+M2+M3 codificadas em `design/`. Total entregue:
 
-- 3.1 Session branch tree (signature primitive)
-- 3.2 Fork from message
-- 3.3 Command palette (Cmd+K)
+| Fase | Screens | Highlights |
+|---|---|---|
+| **M1** | 6 | empty-state, active-conversation (Vereda), streaming, settings, workspace-picker, connection-lost |
+| **M2** | 6 | mode-confirm v→m + m→v, with-note-preview, with-tool-call, with-diff, active-conversation-mestre (prova "no layout change") |
+| **M3** | 6 | branch-tree-2-branches, **branch-tree-4-branches (signature primitive)**, conversation-with-fork-hover, command-palette default/filtered/no-match |
 
-Spec já existe em [`m05-screens-m3.md`](../plans/m05-screens-m3.md).
+Plus **15 preview cards editoriais** + **3 canonical screenshots** (`desktop-vereda.png`, `desktop-mestre.png`, `desktop-branched.png`) + `index-branched.html` mostrando branch tree column ativa.
+
+Specs detalhadas: [`m05-screens-m1.md`](../plans/m05-screens-m1.md) · [`m05-screens-m2.md`](../plans/m05-screens-m2.md) · [`m05-screens-m3.md`](../plans/m05-screens-m3.md).
+
+**Próximo:** M1 dev — reimplementação React/Tauri sobre `src/`. `design/` permanece como referência visual canônica.

@@ -1,0 +1,28 @@
+<!doctype html>
+<html data-theme="dark" data-mode="vereda" lang="pt-BR">
+<head>
+  <meta charset="utf-8" /><title>Preview — Fork from message</title>
+  <link rel="stylesheet" href="_screen-card.css" />
+</head>
+<body>
+  <div class="page">
+    <div class="page-header">
+      <div>
+        <div class="page-eyebrow">m3 — screen 3.2 · interaction</div>
+        <h1 class="page-title">Fork from message</h1>
+      </div>
+      <div class="page-meta">
+        <div class="col"><span class="lbl">surface</span><span class="val">inline on msg</span></div>
+        <div class="col"><span class="lbl">mode</span><span class="val">vereda</span></div>
+        <div class="col"><span class="lbl">affordance</span><span class="val">hover · ⌥+F</span></div>
+      </div>
+    </div>
+    <div class="page-rule"></div>
+    <div class="screen-frame">
+      <span class="corner-tl">+</span><span class="corner-tr">+</span><span class="corner-bl">+</span><span class="corner-br">+</span>
+      <iframe src="../ui_kits/strata-desktop/screens/conversation-with-fork-hover.html" title="Fork interaction"></iframe>
+    </div>
+    <div class="notes"><strong>Hover-only affordance.</strong> Each message carries a fork action at its lower-right — but it lives at <code>opacity: 0</code> with a 200ms reveal delay, so the reading column stays uncluttered. The visible state in this preview is the post-hover state (achieved here with a <code>.shown</code> debug class). The glyph is <code>⤴</code> (Unicode "rightwards arrow over leftwards arrow") and the shortcut is <code>⌥+F</code>. No background, no border — just mono text in <code>--fg-3</code>, brightening to <code>--fg-1</code> on hover-over-the-action itself. Click creates a new branch and triggers an inline <em>"Forkado de "…" — branch &lt;name&gt;"</em> editorial confirmation (the same pattern as <code>banner-success</code>, with a Bloom-2 teal left-rail).</div>
+  </div>
+</body>
+</html>

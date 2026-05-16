@@ -1058,3 +1058,348 @@ body {
   letter-spacing: var(--tracking-mono);
 }
 
+/* ============================================================================
+   M3 — SIGNATURE PRIMITIVE + ERGONOMICS
+   3.1 branch tree · 3.2 fork-from-message · 3.3 command palette
+   ============================================================================ */
+
+/* ----------------------------------------------------------------------------
+   App shell — branch tree column expansion
+   The tree col is inserted between sidebar and main.
+   Add `.with-tree` to .app whenever the session has >=1 fork.
+   ---------------------------------------------------------------------------- */
+.app.with-tree {
+  grid-template-columns: 260px 80px 1fr;
+  grid-template-areas: "header header header" "side tree main";
+}
+.app.with-tree.with-aside {
+  grid-template-columns: 260px 80px 1fr 420px;
+  grid-template-areas: "header header header header" "side tree main aside";
+}
+
+.branch-tree {
+  grid-area: tree;
+  background: var(--vein);
+  border-right: 1px solid var(--border-1);
+  display: flex; flex-direction: column;
+  position: relative;
+  overflow: visible; /* tooltips can spill */
+}
+
+/* The vertical canvas the branch bars sit on. Bars use position:absolute
+   with top/bottom expressed in % so they scale with canvas height. */
+.branch-canvas {
+  position: relative;
+  flex: 1;
+  margin: 16px 6px 12px;
+  min-height: 0;
+}
+
+/* Branch bar — vertical sediment stripe. Color = --bloom-N, set via
+   utility class .bb-1 … .bb-6. Saturation via .recent / .session / .older. */
+.branch-bar {
+  position: absolute;
+  width: 7px;
+  background: var(--bb-color, var(--bloom-1));
+  border-radius: 1px;
+  cursor: pointer;
+  transition: opacity var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.branch-bar:hover { box-shadow: 0 0 0 1px color-mix(in oklch, var(--bb-color, var(--bloom-1)) 60%, transparent); }
+.branch-bar.bb-1 { --bb-color: var(--bloom-1); }
+.branch-bar.bb-2 { --bb-color: var(--bloom-2); }
+.branch-bar.bb-3 { --bb-color: var(--bloom-3); }
+.branch-bar.bb-4 { --bb-color: var(--bloom-4); }
+.branch-bar.bb-5 { --bb-color: var(--bloom-5); }
+.branch-bar.bb-6 { --bb-color: var(--bloom-6); }
+.branch-bar.recent  { opacity: 1; }
+.branch-bar.session { opacity: 0.72; }
+.branch-bar.older   { opacity: 0.48; }
+.branch-bar.empty {
+  background: transparent;
+  border: 1px solid var(--border-2);
+  width: 5px;
+}
+
+/* Column-position helper: x = left position inside the 80px tree col.
+   col-1=16, col-2=29, col-3=42, col-4=55 (7px wide bar + 6px gap). */
+.branch-bar.col-1 { left: 16px; }
+.branch-bar.col-2 { left: 29px; }
+.branch-bar.col-3 { left: 42px; }
+.branch-bar.col-4 { left: 55px; }
+
+/* Junction marks — small L-arc connecting parent right edge to child top.
+   SVG is 8×8; position with `left` = parent bar right edge, `top` = fork y%. */
+.branch-junction {
+  position: absolute;
+  width: 8px; height: 8px;
+  pointer-events: none;
+}
+.branch-junction svg { display: block; overflow: visible; }
+.branch-junction path { fill: none; stroke: var(--border-2); stroke-width: 1; }
+
+/* Active branch indicator ▶ — small caret just right of the active bar's top */
+.branch-active-indicator {
+  position: absolute;
+  font: 400 9px/1 var(--font-mono);
+  color: var(--accent);
+  letter-spacing: 0;
+  text-shadow: 0 0 0 var(--accent);
+}
+
+/* Collapsed-deeper hint — when there are >4 columns of depth */
+.branch-collapse {
+  position: absolute;
+  font: var(--type-mono-sm); color: var(--fg-3);
+  letter-spacing: var(--tracking-mono);
+  white-space: nowrap;
+}
+
+/* Tooltip shown on hover — anchored to the bar but rendered floating to the right */
+.branch-tooltip {
+  position: absolute;
+  left: 88px; /* spill into main column */
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-1);
+  padding: 6px 10px;
+  font: var(--type-mono-sm); color: var(--fg-1);
+  letter-spacing: var(--tracking-mono);
+  white-space: nowrap;
+  z-index: 6;
+  pointer-events: none;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.branch-tooltip .name { color: var(--fg-1); }
+.branch-tooltip .meta { color: var(--fg-3); }
+.branch-tooltip::before {
+  content: "";
+  position: absolute;
+  left: -5px; top: 8px;
+  width: 0; height: 0;
+  border: 4px solid transparent;
+  border-right-color: var(--border-2);
+}
+
+/* Branch tree footer hints */
+.branch-tree-foot {
+  padding: 10px 4px 14px;
+  display: flex; flex-direction: column; gap: 3px;
+  align-items: center;
+  font: var(--type-mono-sm); color: var(--fg-3);
+  letter-spacing: var(--tracking-mono);
+  border-top: 1px solid var(--border-1);
+  white-space: nowrap;
+}
+
+/* ----------------------------------------------------------------------------
+   3.2 — Fork action (hover on message)
+   Subtle hover affordance at the right edge of each message.
+   ---------------------------------------------------------------------------- */
+.msg .fork-action {
+  display: inline-flex; align-items: center; gap: 6px;
+  font: var(--type-mono-sm); color: var(--fg-3);
+  letter-spacing: var(--tracking-mono);
+  cursor: pointer;
+  user-select: none;
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease);
+  transition-delay: 200ms;
+}
+.msg:hover .fork-action,
+.msg .fork-action.shown {
+  opacity: 1;
+}
+.msg .fork-action:hover { color: var(--fg-1); }
+.msg .fork-action .glyph { font-family: var(--font-mono); }
+.msg .fork-action .kbd {
+  color: var(--fg-4);
+  padding-left: 2px;
+}
+
+/* Inline editorial confirmation after fork (uses banner-success pattern) */
+.banner-fork {
+  max-width: 720px; margin: 0 auto 12px;
+  display: flex; align-items: baseline; justify-content: space-between; gap: 14px;
+  background: color-mix(in oklch, var(--bloom-2) 7%, var(--vein));
+  border: 1px solid var(--border-1);
+  border-left: 4px solid var(--bloom-2);
+  padding: 11px 16px;
+  border-radius: var(--radius-1);
+}
+.banner-fork .text {
+  font: 400 14px/1.55 var(--font-serif);
+  font-variation-settings: var(--serif-body);
+  color: var(--fg-1);
+}
+.banner-fork .text em {
+  font-style: italic;
+  font-variation-settings: "opsz" 36, "SOFT" 50;
+}
+.banner-fork .branch-name {
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: 13px;
+  color: var(--fg-2);
+  letter-spacing: var(--tracking-mono);
+}
+.banner-fork .dismiss {
+  background: transparent; border: 0; cursor: pointer;
+  color: var(--fg-3); font-family: var(--font-mono);
+  width: 22px; height: 22px;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.banner-fork .dismiss:hover { color: var(--fg-1); }
+
+/* ----------------------------------------------------------------------------
+   3.3 — Command palette (Cmd+K)
+   560px overlay, ~22vh from top, scrim ~70% bedrock.
+   ---------------------------------------------------------------------------- */
+.palette-scrim {
+  position: fixed; inset: 0;
+  background: color-mix(in oklch, var(--bedrock) 72%, transparent);
+  z-index: 100;
+  display: flex; justify-content: center; align-items: flex-start;
+  padding: 22vh 24px 24px;
+}
+.palette-frame {
+  position: relative;
+  width: 100%; max-width: 560px; max-height: 480px;
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-1);
+  padding: 26px 30px 18px;
+  display: flex; flex-direction: column;
+}
+.palette-frame .corner-tl,
+.palette-frame .corner-tr,
+.palette-frame .corner-bl,
+.palette-frame .corner-br {
+  position: absolute;
+  font: 400 11px/1 var(--font-mono);
+  color: var(--fg-3);
+  pointer-events: none;
+}
+.palette-frame .corner-tl { top: 8px; left: 12px; }
+.palette-frame .corner-tr { top: 8px; right: 12px; }
+.palette-frame .corner-bl { bottom: 8px; left: 12px; }
+.palette-frame .corner-br { bottom: 8px; right: 12px; }
+
+.palette-input-wrap {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--vein);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-1);
+  padding: 9px 14px;
+  margin-bottom: 16px;
+}
+.palette-input-wrap:focus-within { border-color: var(--accent); }
+.palette-slash {
+  color: var(--fg-3);
+  font: 400 14px/1 var(--font-mono);
+  letter-spacing: var(--tracking-mono);
+  user-select: none;
+}
+.palette-input {
+  flex: 1;
+  background: transparent; border: 0; outline: 0;
+  color: var(--fg-1);
+  font: 400 14px/1.4 var(--font-mono);
+  letter-spacing: var(--tracking-mono);
+  caret-color: var(--accent);
+}
+.palette-input::placeholder { color: var(--fg-3); }
+/* Static visual cursor for screenshot demos */
+.palette-input-typed {
+  flex: 1; color: var(--fg-1);
+  font: 400 14px/1.4 var(--font-mono);
+  letter-spacing: var(--tracking-mono);
+  display: inline-flex; align-items: center;
+}
+.palette-input-typed::after {
+  content: ""; display: inline-block;
+  width: 1px; height: 14px;
+  background: var(--accent);
+  margin-left: 2px;
+}
+
+.palette-section-label {
+  font: var(--type-mono-sm); color: var(--fg-3);
+  letter-spacing: var(--tracking-meta); text-transform: uppercase;
+  display: flex; align-items: center; gap: 12px;
+  margin: 4px 0 12px;
+}
+.palette-section-label::before { content: "───"; color: var(--fg-4); letter-spacing: 0; flex: 0 0 auto; }
+.palette-section-label .lbl { white-space: nowrap; }
+.palette-section-label::after { content: ""; flex: 1; height: 1px; background: var(--border-1); }
+
+.palette-list {
+  display: flex; flex-direction: column;
+  flex: 1; min-height: 0;
+  overflow-y: auto;
+  margin: 0 -8px 12px;
+  padding: 0 4px;
+}
+.palette-row {
+  display: grid;
+  grid-template-columns: 132px 1fr;
+  align-items: baseline;
+  gap: 18px;
+  padding: 7px 12px;
+  cursor: pointer;
+  border-radius: var(--radius-1);
+}
+.palette-row:hover { background: var(--hover); }
+.palette-row.selected { background: var(--hover); }
+.palette-row .cmd {
+  font: 400 13px/1.5 var(--font-mono);
+  color: var(--fg-1);
+  letter-spacing: var(--tracking-mono);
+}
+.palette-row .cmd .match {
+  color: var(--fg-1);
+  font-variation-settings: "wght" 600;
+  background: color-mix(in oklch, var(--accent) 16%, transparent);
+  border-radius: 2px;
+  padding: 0 1px;
+}
+.palette-row .cmd .dim { color: var(--fg-3); }
+.palette-row .desc {
+  font: 400 14px/1.4 var(--font-serif);
+  font-style: italic;
+  font-variation-settings: "opsz" 36, "SOFT" 40, "WONK" 0;
+  color: var(--fg-2);
+  letter-spacing: -0.005em;
+}
+
+.palette-no-match {
+  padding: 48px 12px 36px;
+  text-align: center;
+  font: 400 18px/1.4 var(--font-serif);
+  font-style: italic;
+  font-variation-settings: "opsz" 36, "SOFT" 50;
+  color: var(--fg-3);
+  letter-spacing: -0.01em;
+}
+.palette-no-match .em-rule { color: var(--fg-4); }
+
+.palette-footer {
+  display: flex; gap: 12px; justify-content: center; align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-1);
+  font: var(--type-mono-sm); color: var(--fg-3);
+  letter-spacing: var(--tracking-mono);
+}
+.palette-footer .sep { color: var(--fg-4); }
+.palette-footer kbd {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--vein);
+  border: 1px solid var(--border-1);
+  border-radius: 2px;
+  padding: 1px 4px;
+  color: var(--fg-2);
+  letter-spacing: 0;
+}
+
+

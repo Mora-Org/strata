@@ -1,0 +1,36 @@
+<!doctype html>
+<html data-theme="dark" data-mode="vereda" lang="pt-BR">
+<head>
+  <meta charset="utf-8" /><title>Preview — Session branch tree</title>
+  <link rel="stylesheet" href="_screen-card.css" />
+</head>
+<body>
+  <div class="page">
+    <div class="page-header">
+      <div>
+        <div class="page-eyebrow">m3 — screen 3.1 · signature</div>
+        <h1 class="page-title">Session branch tree</h1>
+      </div>
+      <div class="page-meta">
+        <div class="col"><span class="lbl">surface</span><span class="val">tree col 80px</span></div>
+        <div class="col"><span class="lbl">mode</span><span class="val">vereda</span></div>
+        <div class="col"><span class="lbl">depths</span><span class="val">1–3 visible</span></div>
+      </div>
+    </div>
+    <div class="page-rule"></div>
+    <div class="screen-frame-pair">
+      <div class="screen-frame sm">
+        <span class="caption">minimal · 2 branches</span>
+        <span class="corner-tl">+</span><span class="corner-tr">+</span><span class="corner-bl">+</span><span class="corner-br">+</span>
+        <iframe src="../ui_kits/strata-desktop/screens/branch-tree-2-branches.html" title="Branch tree — minimal"></iframe>
+      </div>
+      <div class="screen-frame sm">
+        <span class="caption">full · 4 branches</span>
+        <span class="corner-tl">+</span><span class="corner-tr">+</span><span class="corner-bl">+</span><span class="corner-br">+</span>
+        <iframe src="../ui_kits/strata-desktop/screens/branch-tree-4-branches.html" title="Branch tree — full"></iframe>
+      </div>
+    </div>
+    <div class="notes"><strong>The signature primitive.</strong> An 80px column between sidebar and main, materialized <em>only</em> when the session has ≥1 fork — there is no chrome cost when the user hasn't branched yet. Each branch is a vertical bar 7px wide, color drawn from the <code>--bloom-N</code> ramp by branch index. <strong>Saturation = recency:</strong> the just-forked branch is fully saturated; the abandoned middle branch is faded back to <code>opacity 0.48</code>; the origin is older still. <strong>Horizontal position = depth:</strong> origin in column 1, first fork in column 2, deeper forks step right. The active branch has a small ▶ caret next to its top in the current accent. Junctions are 6×6 hairline L-arcs — not git-graph circles. Hover spawns a tooltip with branch name and message count; the tooltip spills out of the 80px column into the main canvas. The minimal case (left) shows what the tree looks like after the first fork; the full case (right) shows abandoned + recent siblings stacked in the same depth column.</div>
+  </div>
+</body>
+</html>

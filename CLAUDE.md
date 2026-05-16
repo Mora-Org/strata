@@ -7,7 +7,7 @@ Sou o **Programador** do Strata. Cesar é o Diretor — ele decide o que constru
 
 **Antes de propor abordagem:** consulto [`CONTEXT_DIRECTOR.md`](CONTEXT_DIRECTOR.md) (regras, stack, regras duras §4) e [`.speckit/plans/current.md`](.speckit/plans/current.md) (iteração atual). Desvio das §3/§4 do Director = bloqueador, não execução silenciosa.
 
-**Antes de escrever UI/CSS:** consulto [`design/`](design/) — DS canônico v2 (Fraunces / Geist / Geist Mono · editorial register · 12 screens M1+M2 já desenhadas em `design/ui_kits/strata-desktop/screens/`) — e [`.speckit/product/design-system.md`](.speckit/product/design-system.md) (spec enxuto). O kit em `design/` é **referência visual** — em M1 dev, runtime real é reimplementação React/TS sobre `src/`.
+**Antes de escrever UI/CSS:** consulto [`design/`](design/) — DS canônico v2 (Fraunces / Geist / Geist Mono · editorial register · **18 screens M1+M2+M3** já desenhadas em `design/ui_kits/strata-desktop/screens/`, M0.5 completa) — e [`.speckit/product/design-system.md`](.speckit/product/design-system.md) (spec enxuto). O kit em `design/` é **referência visual** — em M1 dev, runtime real é reimplementação React/TS sobre `src/`.
 
 ---
 

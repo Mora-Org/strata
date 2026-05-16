@@ -1,0 +1,41 @@
+<!doctype html>
+<html data-theme="dark" data-mode="vereda" lang="pt-BR">
+<head>
+  <meta charset="utf-8" /><title>Preview — Command palette (⌘K)</title>
+  <link rel="stylesheet" href="_screen-card.css" />
+</head>
+<body>
+  <div class="page">
+    <div class="page-header">
+      <div>
+        <div class="page-eyebrow">m3 — screen 3.3 · overlay</div>
+        <h1 class="page-title">Command palette (⌘K)</h1>
+      </div>
+      <div class="page-meta">
+        <div class="col"><span class="lbl">surface</span><span class="val">modal · 560px</span></div>
+        <div class="col"><span class="lbl">mode</span><span class="val">vereda</span></div>
+        <div class="col"><span class="lbl">states</span><span class="val">default · filtered · empty</span></div>
+      </div>
+    </div>
+    <div class="page-rule"></div>
+    <div class="screen-frame-trio">
+      <div class="screen-frame sm">
+        <span class="caption">default · all commands</span>
+        <span class="corner-tl">+</span><span class="corner-tr">+</span><span class="corner-bl">+</span><span class="corner-br">+</span>
+        <iframe src="../ui_kits/strata-desktop/screens/command-palette-default.html" title="Palette — default"></iframe>
+      </div>
+      <div class="screen-frame sm">
+        <span class="caption">filtered · /me</span>
+        <span class="corner-tl">+</span><span class="corner-tr">+</span><span class="corner-bl">+</span><span class="corner-br">+</span>
+        <iframe src="../ui_kits/strata-desktop/screens/command-palette-filtered.html" title="Palette — filtered"></iframe>
+      </div>
+      <div class="screen-frame sm">
+        <span class="caption">no match · /xyz</span>
+        <span class="corner-tl">+</span><span class="corner-tr">+</span><span class="corner-bl">+</span><span class="corner-br">+</span>
+        <iframe src="../ui_kits/strata-desktop/screens/command-palette-no-match.html" title="Palette — no match"></iframe>
+      </div>
+    </div>
+    <div class="notes"><strong>Two typefaces, one row.</strong> The command name is mono Geist Mono in <code>--fg-1</code>; the description that sits beside it is italic Fraunces (opsz 36, SOFT 40) in <code>--fg-2</code>. The typographic contrast IS the design — you read the commands as code and the descriptions as prose, both in the same row. <strong>Filtering</strong> highlights the matched substring with a small <code>--accent</code>-tinted background pill, not by darkening the rest of the name. The <strong>no-match</strong> state is just one centered italic line — no illustration, no "no results found" panel. Frame is <code>.frame.marks</code> (560px wide, ~22vh from top), scrim is 70% bedrock — enough to dim the conversation behind without blacking it out. <em>Anti-patterns explicitly avoided:</em> no command icons, no "recently used" section, no pinned commands, no auto-execute on single match.</div>
+  </div>
+</body>
+</html>

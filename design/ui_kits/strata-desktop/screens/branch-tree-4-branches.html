@@ -1,0 +1,173 @@
+<!doctype html>
+<html data-theme="dark" data-mode="vereda" lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>Strata — 4 branches (signature)</title>
+  <link rel="stylesheet" href="../app.css" />
+</head>
+<body>
+  <div class="app with-tree">
+    <header class="header">
+      <div class="header-inner">
+        <div class="header-mark">
+          <svg class="glyph" viewBox="0 0 64 64" width="18" height="18" fill="currentColor" aria-hidden="true">
+            <rect x="8" y="14" width="48" height="6" rx="1" opacity="1"></rect>
+            <rect x="8" y="24" width="48" height="6" rx="1" opacity="0.65"></rect>
+            <rect x="8" y="34" width="48" height="6" rx="1" opacity="0.40"></rect>
+            <rect x="8" y="44" width="48" height="6" rx="1" opacity="0.22"></rect>
+          </svg>
+          <span class="strata">strata</span>
+        </div>
+        <div class="header-masthead">
+          <div class="col"><span class="lbl">workspace</span><span class="val">strata-cli</span></div>
+          <div class="col"><span class="lbl">vault</span><span class="val">~/notes/strata</span></div>
+          <div class="col"><span class="lbl">model</span><span class="val">llama3.1:8b</span></div>
+        </div>
+        <div class="header-actions">
+          <span class="switch-lbl">switch</span>
+          <span class="mode-badge" title="Switch mode">vereda</span>
+        </div>
+      </div>
+    </header>
+    <aside class="sidebar">
+      <div class="side-section">
+        <div class="side-divider"><span class="label">workspace</span></div>
+        <div class="ws-block"><span class="ws-name">strata-cli</span><span class="ws-path">~/code/strata-cli</span></div>
+      </div>
+      <div class="side-section flex-rest">
+        <div class="side-divider"><span class="label">conversações</span></div>
+        <div class="chat-list">
+          <div class="chat-item active"><div class="ttl">parse_expr lookahead</div><div class="meta">agora</div></div>
+          <div class="chat-item"><div class="ttl">Rust lifetimes</div><div class="meta">5 min</div></div>
+          <div class="chat-item"><div class="ttl">Tokio task lifecycle</div><div class="meta">ontem</div></div>
+          <div class="chat-item"><div class="ttl">PostgreSQL MVCC</div><div class="meta">2 dias</div></div>
+        </div>
+      </div>
+      <div class="side-section">
+        <div class="side-divider"><span class="label">vault</span></div>
+        <div class="status-rows">
+          <div class="status-row"><span class="status-bullet ok"></span><span class="lbl">~/notes/strata</span></div>
+          <div class="status-row"><span class="status-bullet ok"></span><span class="lbl">ollama · llama3.1:8b</span></div>
+        </div>
+      </div>
+      <div class="side-foot">
+        <button class="btn btn-ghost" type="button" title="Nova conversa"><span style="font-family: var(--font-mono); font-size: 13px;">+</span><span>nova</span></button>
+        <button class="btn btn-ghost" type="button" title="Configurações" aria-label="Configurações"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+      </div>
+    </aside>
+    <div class="branch-tree">
+      <div class="branch-canvas">
+        <div class="branch-bar bb-1 older" style="left: 16px; top: 0%; bottom: 0%;" title="origin · 22 msgs"></div>
+        <div class="branch-bar bb-2 session" style="left: 29px; top: 22%; bottom: 0%;" title="borrow-checker-rewrite · 14 msgs"></div>
+        <span class="branch-active-indicator" style="left: 38px; top: calc(22% - 1px);">▶</span>
+        <div class="branch-bar bb-3 older" style="left: 42px; top: 48%; bottom: 32%;" title="alias-experiment · 3 msgs (encerrada)"></div>
+        <div class="branch-bar bb-4 recent" style="left: 42px; top: 75%; bottom: 0%;" title="tail-take-ownership · 5 msgs"></div>
+        <div class="branch-tooltip" style="top: calc(75% + 2px);">
+          <span class="name">tail-take-ownership</span>
+          <span class="meta">5 msgs · 3 min</span>
+        </div>
+        <div class="branch-junction" style="left: 23px; top: calc(22% - 5px);"><svg width="6" height="6" viewBox="0 0 6 6"><path d="M 0 1 L 1 1 Q 5 1 5 5 L 5 6"/></svg></div>
+        <div class="branch-junction" style="left: 36px; top: calc(48% - 5px);"><svg width="6" height="6" viewBox="0 0 6 6"><path d="M 0 1 L 1 1 Q 5 1 5 5 L 5 6"/></svg></div>
+        <div class="branch-junction" style="left: 36px; top: calc(75% - 5px);"><svg width="6" height="6" viewBox="0 0 6 6"><path d="M 0 1 L 1 1 Q 5 1 5 5 L 5 6"/></svg></div>
+
+      </div>
+      <div class="branch-tree-foot">
+        <span>· click</span>
+        <span>· ⌥+F</span>
+      </div>
+    </div>
+      <main class="main">
+        <div class="main-inner">
+          <span class="corner-tl">+</span>
+          <span class="corner-tr">+</span>
+          <div class="main-scroll">
+            <div class="main-scroll-inner">
+            <article class="msg msg-user">
+              <div class="msg-avatar">[u]</div>
+              <div class="msg-body">
+                <div class="text">Por que o borrow checker reclama do meu parser? Compila tranquilo até eu adicionar o lookahead em <span style="font-family: var(--font-mono); font-size: 13px; color: var(--fg-2);">parse_expr</span>.</div>
+                <div class="fork-action"><span class="glyph">⤴</span> <span class="kbd">⌥+F</span></div>
+              </div>
+            </article>
+
+            <article class="msg msg-strata">
+              <div class="msg-avatar strata">
+                <svg viewBox="0 0 64 64" width="14" height="14" fill="currentColor" aria-hidden="true">
+                  <rect x="8" y="14" width="48" height="6" rx="1" opacity="1"></rect>
+                  <rect x="8" y="24" width="48" height="6" rx="1" opacity="0.65"></rect>
+                  <rect x="8" y="34" width="48" height="6" rx="1" opacity="0.40"></rect>
+                  <rect x="8" y="44" width="48" height="6" rx="1" opacity="0.22"></rect>
+                </svg>
+              </div>
+              <div class="msg-body">
+                <div class="text">
+                  <p>O borrow mutável que você toma no lookahead em <span class="bridge">src/parser/expr.rs:142</span> sobrevive ao borrow imutável segurado pelo caller em <span class="bridge">src/parser/expr.rs:118</span>. O compilador não consegue provar que os dois não fazem alias.</p>
+                  <p>A correção mais simples: tomar ownership do <em class="text-italic">token slice</em> antes do lookahead, em vez de emprestá-lo através do limite da chamada.</p>
+                </div>
+                <div class="msg-meta">
+                  <div class="msg-meta-left">
+                    <span class="bloom bloom-3">L3 aplicar</span>
+                    <span class="meta-text">· 1 ref · 1 link</span>
+                  </div>
+                  <button class="btn" type="button">Pré-visualizar nota</button>
+                </div>
+                <div class="fork-action"><span class="glyph">⤴</span> <span class="kbd">⌥+F</span></div>
+              </div>
+            </article>
+
+            <article class="msg msg-user">
+              <div class="msg-avatar">[u]</div>
+              <div class="msg-body">
+                <div class="text">Tenta tomar ownership com <span style="font-family: var(--font-mono); font-size: 13px; color: var(--fg-2);">std::mem::take</span> e me mostra como fica.</div>
+                <div class="fork-action"><span class="glyph">⤴</span> <span class="kbd">⌥+F</span></div>
+              </div>
+            </article>
+
+            <article class="msg msg-strata">
+              <div class="msg-avatar strata">
+                <svg viewBox="0 0 64 64" width="14" height="14" fill="currentColor" aria-hidden="true">
+                  <rect x="8" y="14" width="48" height="6" rx="1" opacity="1"></rect>
+                  <rect x="8" y="24" width="48" height="6" rx="1" opacity="0.65"></rect>
+                  <rect x="8" y="34" width="48" height="6" rx="1" opacity="0.40"></rect>
+                  <rect x="8" y="44" width="48" height="6" rx="1" opacity="0.22"></rect>
+                </svg>
+              </div>
+              <div class="msg-body">
+                <div class="text">
+                  <p>Em <span class="bridge">src/parser/expr.rs:121</span>, troco a closure por uma chamada estática que recebe os tokens dropados via <em class="text-italic">std::mem::take</em>. O escopo do borrow do caller termina antes do lookahead começar.</p>
+                  <p>Quer um diff? Posso desenhar a mudança aqui em Vereda; aplicar de fato exige Mestre.</p>
+                </div>
+                <div class="msg-meta">
+                  <div class="msg-meta-left">
+                    <span class="bloom bloom-4">L4 analisar</span>
+                    <span class="meta-text">· 1 ref · 0 link</span>
+                  </div>
+                  <button class="btn" type="button">Pré-visualizar nota</button>
+                </div>
+                <div class="fork-action"><span class="glyph">⤴</span> <span class="kbd">⌥+F</span></div>
+              </div>
+            </article>
+            </div>
+          </div>
+        <div class="composer-wrap">
+          <div class="composer">
+            <textarea rows="1" placeholder="Pergunte sobre o código. Uma nota será proposta; nada é escrito sem seu OK."></textarea>
+            <button class="composer-send" disabled aria-label="Enviar">↵</button>
+          </div>
+          <div class="footer-hints">
+            <span class="plus">+</span>
+            <span class="center">
+              <span class="kbd">↵ send</span><span class="sep">·</span>
+              <span class="kbd">⇧↵ newline</span><span class="sep">·</span>
+              <span class="kbd">⌘K palette</span><span class="sep">·</span>
+              <span class="mode-text">vereda · explica, não edita</span>
+            </span>
+            <span class="plus">+</span>
+          </div>
+        </div>
+          <span class="corner-bl">+</span><span class="corner-br">+</span>
+        </div>
+      </main>
+  </div>
+</body>
+</html>
