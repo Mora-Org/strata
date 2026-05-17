@@ -100,3 +100,27 @@ Mudanças com impacto observável. Granularidade: alguém externo deveria conseg
   - Atualizado `design/colors_and_type.css` @font-face urls + `src/__tests__/fonts.test.ts` paths
   - Build agora bundla todas 4 fontes corretamente
 - Próximo: M1.b — Tauri 2 init + fork Pi + Ollama client wrapper
+
+## 2026-05-17 (M1.b) — Tauri 2 + Pi wrapper + Ollama client ✅ 40/40 testes
+- **Tauri 2 init non-interactive** (`cargo tauri init --ci`):
+  - `src-tauri/` criado com Cargo.toml, build.rs, tauri.conf.json, src/main.rs + lib.rs, capabilities/, icons/
+  - `tauri.conf.json` ajustado: productName "Strata", identifier `org.mora.strata`, window 1280×800 (baseline DS) minWidth 960, devUrl localhost:5173, frontendDist ../dist
+  - `Cargo.toml`: name=strata, license=MIT, authors Mora, repo Mora-Org/strata, lib name `strata_lib`
+  - `src-tauri/src/main.rs`: chamada atualizada de `app_lib::run()` → `strata_lib::run()`
+- **@tauri-apps/api@2.11.0** instalado (frontend ↔ Rust bridge — usado em M1.d)
+- **@mariozechner/pi-coding-agent@0.73.1** instalado como **npm dependency** (decisão M1.b: dep em vez de fork — ADR-0001 reavaliada em decisions.md)
+- **`src/lib/pi/`** criado:
+  - `index.ts` — re-exports Pi SDK (createAgentSession, AgentSession, SessionManager, AuthStorage, ModelRegistry, createReadOnlyTools, createCodingTools) + Strata helpers
+  - `session.ts` — `createStrataSession({mode, workspacePath, vaultPath, pi})` → `StrataSessionHandle`. Default mode 'vereda' (Director §4)
+- **`src/lib/ollama/`** criado:
+  - `types.ts` — OllamaModel, OllamaTagsResponse, OllamaMessage, OllamaChatRequest/Response, OllamaStreamChunk
+  - `client.ts` — `OllamaClient` com isReachable() / listModels() / chat(). AbortController + timeout 60s. fetchImpl override pra testes.
+- **`src/lib/types/`** criado: StrataMode, StrataTheme, WorkspaceConfig, VaultConfig + DEFAULT_MODE/THEME/INBOX_FOLDER
+- **3 test suites novos** (+24 testes, 60% growth):
+  - `ollama-client.test.ts` (10) — isReachable (3 cenários), listModels (2), chat (3), defaults + custom baseUrl
+  - `pi-session.test.ts` (7) — Pi totalmente mockado; valida defaults Vereda, modes, paths passthrough, no-persistence between sessions
+  - `strata-types.test.ts` (7) — defaults canônicos, type contracts, config shapes
+- **Total: 40/40 passing** (M1.a: 16 → M1.b: 40)
+- **Build smoke OK** — `npm run build` → ✓ built in 1.30s, 0 warnings, bundle bate M1.a (193 KB JS + 17 KB CSS + 4 fontes)
+- Pequeno fix iterativo: TS strict caught mock-vs-real-type mismatch em pi-session.test.ts (`runtime` não existe em CreateAgentSessionResult — só `session` + `extensionsResult`). Mock ajustado pra refletir o tipo real.
+- Próximo: M1.c — UI shell (Header + Sidebar + Composer + Footer) + Zustand + Playwright setup + snapshot tests contra design/HTML

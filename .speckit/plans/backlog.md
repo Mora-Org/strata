@@ -16,8 +16,8 @@ Ordem reflete prioridade. Itens sem ordem ainda ficam em "Não-priorizado".
 4. ~~**M0.5.e**~~ ✅ Codificação M3 (adicionada ao `design/` existente sem sobrescrever) — fechada 2026-05-16
 5. **M1** ← **ATIVA** — Scaffolding Tauri + fork Pi + reimplementação dos 18 screens em React/TS real + chat hello-world Ollama. Sub-passes:
    - ~~**M1.a**~~ ✅ Foundation (Vite + React 19 + TS + Tailwind v3 + Vitest + token bridge + 16/16 testes) — 2026-05-17
-   - **M1.b** ← próxima — Tauri 2 init + fork Pi pra src/lib/pi/ + Ollama client wrapper (com mocks)
-   - **M1.c** — UI shell (Header + Sidebar + Composer) + Zustand + Playwright + snapshot tests vs design/
+   - ~~**M1.b**~~ ✅ Tauri 2 init + Pi wrapper (npm dep) + Ollama client + 40/40 testes — 2026-05-17
+   - **M1.c** ← **próxima** — UI shell (Header + Sidebar + Composer) + Zustand + Playwright + snapshot tests vs design/
    - **M1.d** — wire chat hello-world (requer Ollama rodando)
    - **M1.e** — settings + workspace picker + Tauri store persistence
    - **M1.f** — polish + TestSprite scenarios + M1 fecha

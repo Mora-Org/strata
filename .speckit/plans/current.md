@@ -116,12 +116,34 @@ status: ativo
 - [x] `DEV.md` na raiz (instruções dev pra contributors)
 - [x] **Fix bonus:** renomeados 2 fontes Fraunces de `Fraunces[SOFT,WONK,opsz,wght].ttf` → `Fraunces-VariableFont.ttf` (e idem pra italic). Razão: chars `[ ] ,` no filename quebravam o bundling Vite. Atualizado `design/colors_and_type.css` @font-face urls + test paths. Build passou bundlando todas 4 fontes (Fraunces 357KB + 407KB ttf, Geist 70KB + 71KB woff2).
 
-#### M1.b — Tauri 2 init + fork Pi + Ollama client wrapper (próximo)
-- `tauri init` (v2) — requer MSVC no Windows
-- Fork manual do Pi pra `src/lib/pi/`
-- Ollama client wrapper com fetch mockado em testes
-- Tests: Pi session criada com mock, Ollama client com fetch mockado, types/contracts validados
-- Ainda não precisa de Ollama rodando (mocks)
+#### M1.b — Tauri 2 init + Pi wrapper + Ollama client ✅ FECHADA 2026-05-17
+- [x] **Tauri 2 init** com `cargo tauri init --ci`:
+  - `src-tauri/` criado (Cargo.toml, build.rs, tauri.conf.json, src/main.rs + lib.rs, capabilities/, icons/)
+  - `tauri.conf.json`: productName "Strata", identifier `org.mora.strata`, window 1280×800 (baseline DS), minWidth 960, devUrl localhost:5173, frontendDist ../dist
+  - `Cargo.toml`: name=strata, license=MIT, repo Mora-Org/strata, lib name=strata_lib
+  - `src-tauri/src/main.rs`: `strata_lib::run()`
+  - `src-tauri/target/` já no .gitignore (do M0.5.b prep)
+- [x] **`@tauri-apps/api@2.11`** instalado (frontend ↔ Rust bridge — usar em M1.d quando precisar)
+- [x] **`@mariozechner/pi-coding-agent@0.73.1`** instalado como **dependência npm** (decisão M1.b: usar como dep, forkar em iteração futura se Mode Router precisar interceptar — ADR-0001 analysis preservada)
+- [x] **`src/lib/pi/`**: wrapper minimal
+  - `index.ts` — re-exports do Pi (createAgentSession, AgentSession, SessionManager, AuthStorage, ModelRegistry, createReadOnlyTools, createCodingTools) + Strata helpers
+  - `session.ts` — `createStrataSession({mode, workspacePath, vaultPath, pi})` → `StrataSessionHandle`. Default mode = 'vereda' (Director §4)
+- [x] **`src/lib/ollama/`**: HTTP client minimal
+  - `types.ts` — OllamaModel, OllamaTagsResponse, OllamaMessage, OllamaChatRequest, OllamaChatResponse, OllamaStreamChunk
+  - `client.ts` — `OllamaClient` com `isReachable()`, `listModels()`, `chat()`. AbortController + timeout 60s. Fetch override pra testes.
+- [x] **`src/lib/types/`**: contratos compartilhados (StrataMode, StrataTheme, WorkspaceConfig, VaultConfig + defaults)
+- [x] **3 test suites novos** (24 testes, todos com mocks — sem hit em Pi real nem Ollama):
+  - `__tests__/ollama-client.test.ts` (10) — isReachable (3 cenários), listModels (2), chat (3), defaults (1), custom baseUrl (1)
+  - `__tests__/pi-session.test.ts` (7) — default mode vereda, mode mestre, workspacePath/vaultPath passthrough, Pi options forward, attaches result, default não persiste
+  - `__tests__/strata-types.test.ts` (7) — defaults canônicos (Vereda, dark, inbox), types aceitam valores válidos, WorkspaceConfig/VaultConfig shapes
+- [x] **Total: 40/40 testes passando** (era 16 em M1.a → +24 em M1.b)
+- [x] Build smoke OK — `npm run build` → ✓ built in 1.30s, 0 warnings, bundle 193 KB JS + 17 KB CSS + 4 fontes
+
+#### M1.c — UI shell (Header + Sidebar + Composer + Footer) (próximo)
+- Zustand entra aqui (estado de modo, workspace, conversation)
+- Reimplementação React dos JSX de `design/ui_kits/strata-desktop/`
+- Snapshot tests contra HTML do `design/`
+- Playwright setup pra e2e
 
 #### M1.c — UI shell (Header + Sidebar + Composer + Footer)
 - Reimplementação React dos JSX de `design/ui_kits/strata-desktop/`

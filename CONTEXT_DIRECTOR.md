@@ -79,7 +79,7 @@ strata/
 └── (sem código de produção ainda — M1 dev começa o scaffolding Tauri)
 ```
 
-**M0.5 fechada.** Próximo marco: M1 dev (scaffolding Tauri + Vite + fork Pi + reimplementação dos 18 screens em React/TS real, com `design/` como referência visual). Tracking em [`.speckit/plans/current.md`](.speckit/plans/current.md).
+**M0.5 fechada. M1.a e M1.b fechadas (2026-05-17).** Próximo marco: M1.c — UI shell (Header + Sidebar + Composer + Footer) reimplementando React dos JSX em `design/ui_kits/strata-desktop/`, com Zustand entrando pra estado, Playwright pra e2e, snapshot tests contra HTML do `design/`. Tracking em [`.speckit/plans/current.md`](.speckit/plans/current.md).
 
 ---
 
