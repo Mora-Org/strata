@@ -1,0 +1,11 @@
+/* Token bridge — single source of truth is design/colors_and_type.css
+   Importing here so all design tokens (oklch colors, type families,
+   fonts via @font-face, primitives) are available across src/.
+
+   Path resolution: from src/styles/tokens.css → ../../design/...
+   Vite handles relative @import. @font-face url() inside the
+   imported CSS resolves relative to its own file location, so fonts
+   in design/assets/fonts/ remain reachable.
+*/
+
+@import '../../design/colors_and_type.css';

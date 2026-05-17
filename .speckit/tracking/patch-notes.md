@@ -76,3 +76,27 @@ Mudanças com impacto observável. Granularidade: alguém externo deveria conseg
   - `plans/backlog.md`: M0.5.d/e marcadas done; M1 promovida pra próxima ativa
 - **Total: 18 screens** (M1: 6 + M2: 6 + M3: 6) + 15 preview cards + 3 canonical screenshots
 - **M0.5 inteira fechada** — próximo movimento é **M1 dev** (primeiro código de produção)
+
+## 2026-05-17 (M1.a) — Foundation scaffolding ✅ primeiro código de produção
+- **Sub-pass M1.a fechada** — Vite + React 19 + TS strict + Tailwind v3 + Vitest pronto
+- `package.json` na raiz: name=strata, MIT, type=module, scripts dev/build/test/test:run/test:ui
+- `npm install` instalou 248 packages, 0 vulnerabilidades, em 14s
+- Configs criadas: `tsconfig.json` (project references) + `tsconfig.app.json` (strict) + `tsconfig.node.json`, `vite.config.ts` (com test config Vitest), `tailwind.config.js`, `postcss.config.js`
+- `index.html` na raiz com `data-theme="dark"` `data-mode="vereda"` (defaults conforme Director §4)
+- `src/` estrutura inicial:
+  - `main.tsx` (StrictMode + createRoot)
+  - `App.tsx` placeholder ("Strata · M1.a")
+  - `index.css` (entry — importa tokens + Tailwind directives)
+  - `styles/tokens.css` ← **token bridge** (@import '../../design/colors_and_type.css')
+  - `vite-env.d.ts` (Vite ambient types pra .css imports)
+  - `setupTests.ts` (jest-dom matchers)
+- **Token bridge funciona** — design/colors_and_type.css é single source of truth; mudanças lá refletem em src/ automaticamente
+- **Tests: 16/16 passando** (3 suites: App, tokens, fonts)
+- **Build smoke OK** — `npm run build` → ✓ built in 1.19s, 0 warnings, bundle 193 KB JS + 17 KB CSS + 4 fontes
+- `DEV.md` criado na raiz (setup pra contributors)
+- **Fix bonus:** renomeados Fraunces fonts no design/assets/fonts/ pra remover chars `[ ] ,` que quebravam Vite asset bundling:
+  - `Fraunces[SOFT,WONK,opsz,wght].ttf` → `Fraunces-VariableFont.ttf`
+  - `Fraunces-Italic[SOFT,WONK,opsz,wght].ttf` → `Fraunces-Italic-VariableFont.ttf`
+  - Atualizado `design/colors_and_type.css` @font-face urls + `src/__tests__/fonts.test.ts` paths
+  - Build agora bundla todas 4 fontes corretamente
+- Próximo: M1.b — Tauri 2 init + fork Pi + Ollama client wrapper

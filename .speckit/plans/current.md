@@ -87,17 +87,58 @@ status: ativo
 
 ---
 
-## Próxima iteração: M1 — Scaffolding Tauri + Pi (ATIVA)
-**Início estimado:** quando você der "vai"
+## Iteração: M1 — Scaffolding Tauri + Pi (ATIVA)
+**Início:** 2026-05-17 (M1.a)
 **Critério de fechamento:** chat hello-world Ollama rodando em janela Tauri com layout 1.2 (active conversation Vereda) reconhecível.
 
-### Entregas previstas
-- `npm init`, Vite + React 19 + TS + Tailwind v3
-- `tauri init` (v2)
+### Sub-passes
+
+#### M1.a — Foundation scaffolding ✅ FECHADA 2026-05-17
+- [x] `package.json` (name=strata, MIT, type=module, scripts dev/build/test/test:run/test:ui)
+- [x] `npm install` — 248 packages, 0 vulnerabilidades, em ~14s
+- [x] Vite 7 + React 19 + TypeScript 5 strict
+- [x] Tailwind v3.4 + PostCSS + Autoprefixer
+- [x] Vitest 3 + Testing Library (React + jest-dom + user-event) + jsdom
+- [x] `tsconfig.json` + `tsconfig.app.json` + `tsconfig.node.json` (strict, project references)
+- [x] `vite.config.ts` com Vitest test config
+- [x] `tailwind.config.js` + `postcss.config.js`
+- [x] `index.html` na raiz com `data-theme="dark"` `data-mode="vereda"`
+- [x] `src/main.tsx` + `src/App.tsx` placeholder (mostra "Strata · M1.a")
+- [x] `src/index.css` (entry CSS — importa tokens + Tailwind directives)
+- [x] **Token bridge:** `src/styles/tokens.css` faz `@import '../../design/colors_and_type.css'` — single source of truth
+- [x] `src/vite-env.d.ts` (Vite ambient types)
+- [x] `src/setupTests.ts` (jest-dom matchers)
+- [x] 3 test suites, **16/16 testes passando:**
+  - `App.test.tsx` (3) — heading, marker M1.a, landmark
+  - `__tests__/tokens.test.ts` (7) — bridge existe, design tokens canônicos presentes
+  - `__tests__/fonts.test.ts` (6) — 4 variable fonts + 2 OFL no design/assets/fonts/
+- [x] Build smoke: `npm run build` → ✓ built in 1.19s, 0 warnings
+- [x] `DEV.md` na raiz (instruções dev pra contributors)
+- [x] **Fix bonus:** renomeados 2 fontes Fraunces de `Fraunces[SOFT,WONK,opsz,wght].ttf` → `Fraunces-VariableFont.ttf` (e idem pra italic). Razão: chars `[ ] ,` no filename quebravam o bundling Vite. Atualizado `design/colors_and_type.css` @font-face urls + test paths. Build passou bundlando todas 4 fontes (Fraunces 357KB + 407KB ttf, Geist 70KB + 71KB woff2).
+
+#### M1.b — Tauri 2 init + fork Pi + Ollama client wrapper (próximo)
+- `tauri init` (v2) — requer MSVC no Windows
 - Fork manual do Pi pra `src/lib/pi/`
-- Token bridge: importa `design/colors_and_type.css` como single source of truth → gera Tailwind config a partir dele (não duplicar tokens)
-- @font-face apontando pra `design/assets/fonts/` (mesma estratégia do kit)
-- **Reimplementa as M1-screens** do kit `design/ui_kits/strata-desktop/screens/` em React/TS real (kit é referência, não runtime)
-- "Hello world" no chat: usuário digita, Ollama responde, masthead com workspace/vault/model
-- Sem Mode Router funcional ainda (Vereda só visualmente — bloqueio efetivo de tools vem em M2)
-- Sem nota gerada ainda (vem em M2)
+- Ollama client wrapper com fetch mockado em testes
+- Tests: Pi session criada com mock, Ollama client com fetch mockado, types/contracts validados
+- Ainda não precisa de Ollama rodando (mocks)
+
+#### M1.c — UI shell (Header + Sidebar + Composer + Footer)
+- Reimplementação React dos JSX de `design/ui_kits/strata-desktop/`
+- Snapshot tests contra HTML do `design/`
+- Playwright setup
+- Zustand entra aqui (estado de modo, workspace, conversation)
+
+#### M1.d — Wire chat hello-world (requer Ollama rodando)
+- Composer → Pi session → Ollama → render
+- Streaming dots, connection-lost banner
+- e2e Playwright smoke
+
+#### M1.e — Settings + workspace picker
+- Persistence via Tauri store
+- File dialog wireup
+
+#### M1.f — Polish + acceptance
+- Todas 6 telas M1 reagindo
+- TestSprite scenarios escritos
+- M1 fecha aqui
