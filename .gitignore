@@ -22,6 +22,9 @@ out/
 *.log
 npm-debug.log*
 
+# TypeScript incremental compile cache (gerado por `tsc -b`)
+*.tsbuildinfo
+
 # Tauri
 src-tauri/target/
 
