@@ -33,9 +33,32 @@ const TAMANHO_MAX_PAGINA = 15_000;
 
 // ---------- arXiv ----------
 
+// Provisório: em 30/09/2026 o arXiv devolveu timeout e 429 em rajadas de busca. Este intervalo
+// fixo entre pedidos é a solução temporária; a estratégia definitiva vem com os testes a fundo.
+export const INTERVALO_ARXIV_MS = 4000;
+let ultimoPedidoArxiv = Number.NEGATIVE_INFINITY;
+
+export async function esperarVezArxiv(
+  intervaloMs = INTERVALO_ARXIV_MS,
+  agora: () => number = Date.now,
+  dormir: (ms: number) => Promise<void> = (ms) => new Promise((r) => setTimeout(r, ms)),
+): Promise<void> {
+  // reserva o horário antes de dormir, pra duas buscas simultâneas não passarem juntas
+  const horario = Math.max(agora(), ultimoPedidoArxiv + intervaloMs);
+  ultimoPedidoArxiv = horario;
+  const falta = horario - agora();
+  if (falta > 0) await dormir(falta);
+}
+
+// só pros testes
+export function zerarEsperaArxiv(): void {
+  ultimoPedidoArxiv = Number.NEGATIVE_INFINITY;
+}
+
 export async function buscarArxiv(termos: string, max: number, buscar: Buscador = fetch): Promise<CandidatoFonte[]> {
   const palavras = termos.trim().split(/\s+/).filter(Boolean);
   if (palavras.length === 0) throw new Error('buscar_artigos: termos vazios');
+  await esperarVezArxiv();
   const consulta = palavras.map((p) => `all:${p}`).join(' AND ');
   const url = `https://export.arxiv.org/api/query?search_query=${encodeURIComponent(consulta)}&max_results=${max}`;
   const resp = await buscar(url, { headers: { 'User-Agent': AGENTE }, signal: AbortSignal.timeout(TEMPO_MAX_MS) });

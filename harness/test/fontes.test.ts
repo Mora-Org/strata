@@ -1,9 +1,18 @@
-import { describe, expect, test } from 'bun:test';
+import { beforeEach, describe, expect, test } from 'bun:test';
 import { mkdtempSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { criarFerramentas } from '../src/ferramentas.ts';
-import { htmlParaTexto, lerAtomArxiv, lerJsonCrossref, lerPagina, limparJats, type Buscador } from '../src/fontes.ts';
+import {
+  esperarVezArxiv,
+  htmlParaTexto,
+  lerAtomArxiv,
+  lerJsonCrossref,
+  lerPagina,
+  limparJats,
+  zerarEsperaArxiv,
+  type Buscador,
+} from '../src/fontes.ts';
 
 // Respostas reais gravadas em 30/09/2026; nenhum teste sai pra rede
 const XML_ARXIV = readFileSync(join(import.meta.dir, 'fixtures', 'arxiv-quantizacao.xml'), 'utf8');
@@ -17,6 +26,39 @@ function buscadorFalso(urlsVistas: string[] = []): Buscador {
     throw new Error(`teste tentou sair pra rede: ${url}`);
   };
 }
+
+describe('intervalo entre pedidos ao arXiv', () => {
+  test('o primeiro pedido não espera e cada seguinte espera 4 s desde o anterior', async () => {
+    zerarEsperaArxiv();
+    let relogio = 100_000;
+    const esperas: number[] = [];
+    const dormir = async (ms: number) => {
+      esperas.push(ms);
+      relogio += ms;
+    };
+    await esperarVezArxiv(4000, () => relogio, dormir);
+    relogio += 1000; // 1 s depois do primeiro pedido
+    await esperarVezArxiv(4000, () => relogio, dormir);
+    relogio += 10_000; // bem depois: já passou o intervalo
+    await esperarVezArxiv(4000, () => relogio, dormir);
+    expect(esperas).toEqual([3000]);
+  });
+
+  test('dois pedidos simultâneos não passam juntos', async () => {
+    zerarEsperaArxiv();
+    let relogio = 0;
+    const esperas: number[] = [];
+    const dormir = async (ms: number) => {
+      esperas.push(ms);
+    };
+    await Promise.all([
+      esperarVezArxiv(4000, () => relogio, dormir),
+      esperarVezArxiv(4000, () => relogio, dormir),
+      esperarVezArxiv(4000, () => relogio, dormir),
+    ]);
+    expect(esperas).toEqual([4000, 8000]);
+  });
+});
 
 describe('arXiv', () => {
   test('lê o Atom gravado', () => {
@@ -69,6 +111,9 @@ describe('Crossref', () => {
 });
 
 describe('ferramenta buscar_artigos', () => {
+  // cada teste pede ao arXiv falso; sem zerar, o segundo esperaria o intervalo real
+  beforeEach(() => zerarEsperaArxiv());
+
   test('junta arXiv e Crossref e mostra o id que a fonte terá no acervo', async () => {
     const pasta = mkdtempSync(join(tmpdir(), 'strata-fontes-'));
     const urls: string[] = [];
