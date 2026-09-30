@@ -1,0 +1,6 @@
+# Artefatos do bun build --compile
+*.exe
+dist/
+*.bun-build
+
+node_modules/
