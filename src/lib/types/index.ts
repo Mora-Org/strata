@@ -1,14 +1,11 @@
 /**
  * Shared contracts for Strata.
  *
- * Single source of truth for cross-module types. Imported by:
- * - src/lib/pi/ (session wrappers)
- * - src/lib/ollama/ (client/types)
- * - src/ components (M1.c+)
+ * Single source of truth for cross-module types. Imported by the React components and store.
  */
 
-/** The two modes a Strata session can run in. Director §4 hard rule:
- *  every new session defaults to 'vereda'. Mode never persists between sessions. */
+/** The two modes a Strata session can run in. 'vereda' e 'mestre' são os identificadores
+ *  antigos de Estudo e Ação; o renome acontece junto com a janela Tauri. */
 export type StrataMode = 'vereda' | 'mestre';
 
 export const DEFAULT_MODE: StrataMode = 'vereda';
@@ -26,12 +23,3 @@ export interface WorkspaceConfig {
   path: AbsolutePath;
   name: string;
 }
-
-/** Obsidian vault config — central in Strata (optional in Atelier).
- *  Strata only writes inside `inboxFolder` (regra dura §4). */
-export interface VaultConfig {
-  path: AbsolutePath;
-  inboxFolder: string;
-}
-
-export const DEFAULT_INBOX_FOLDER = 'inbox';

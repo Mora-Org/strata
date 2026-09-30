@@ -1,8 +1,10 @@
 ---
 dono: Cesar
-atualizado: 2026-05-04
-status: ativo
+atualizado: 2026-09-30
+status: substituído
 ---
+
+> Substituído em 30/09/2026 pelo ADR-0007: as notas agora são notas de fonte num acervo em árvore de índices, com o Obsidian opcional.
 
 # Spec Canônico da Nota Obsidian
 

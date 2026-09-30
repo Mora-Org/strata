@@ -1,9 +1,9 @@
 ---
 dono: Cesar
-atualizado: 2026-05-04
-status: ativo
+atualizado: 2026-09-30
+status: substituído
 supersedes: nenhum
-superseded_by: nenhum
+superseded_by: ADR-0005
 ---
 
 # ADR-0001 — Forkar Pi vs reimplementar do zero

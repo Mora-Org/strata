@@ -1,6 +1,8 @@
-# Context Director — Strata
+# Context Director: Strata
 
-> **Para as IAs (sistema):** leia este documento antes de propor mudanças estruturais. Confirme contra o disco — não invente. Este doc descreve **como trabalhamos**, não a filosofia (essa está em `manifesto.md`) nem o backlog atual (esse está em `.speckit/`).
+> **Para as IAs (sistema):** leia este documento antes de propor mudanças estruturais. Confirme contra o disco, não invente. Este doc descreve **como trabalhamos**, não a filosofia (essa está em `manifesto.md`) nem o backlog atual (esse está em `.speckit/`).
+>
+> Reescrito em 30/09/2026 a partir da direção nova: [`.speckit/product/direcao-2026-09.md`](.speckit/product/direcao-2026-09.md).
 
 ---
 
@@ -20,15 +22,15 @@ IAs **não decidem mudança de stack ou arquitetura sozinhas**. Levantam como bl
 
 ## §2. Mentalidade Arquitetural
 
-Strata é **local-first**, **vault-first**, **Vereda-first**. Toda decisão técnica passa por essas três lentes.
+Strata é um **harness de estudo**: pesquisa fontes, guarda num acervo que a pessoa possui e ensina em vez de responder pela pessoa. Toda decisão técnica passa por estas lentes.
 
-- **Tipos antes de código.** Nenhuma função sem interface TS definida. Nenhum endpoint sem schema.
-- **Vereda como padrão é inquebrável.** Nenhuma feature pode tornar Modo Mestre o caminho natural. Atalho pra Mestre via UI ambígua = bug arquitetural.
-- **Offline é postura, não fallback.** Ollama local é o caminho default. Cloud é opt-in com configuração explícita.
-- **Vault é contrato.** Strata nunca edita nota existente sem permissão. Só cria em `inbox/`. Frontmatter segue schema canônico (`.speckit/product/obsidian-note-spec.md`).
-- **Sem fallback silencioso entre providers.** Se Ollama cai e o usuário não configurou cloud, falha clara — não tenta cloud "por conveniência".
-- **Atomicidade na geração da nota.** Se a IA gera resposta mas falha ao escrever no vault, o usuário vê o erro — não fica meia-nota órfã.
-- **Observabilidade.** Log estruturado JSON, mascarar chave de API, nunca logar conteúdo da nota (privacidade do vault é absoluta).
+- **Fonte acima de memória.** Com o conhecimento do modelo desligado (o padrão), conceito vem de fonte com nome e endereço.
+- **O acervo é da pessoa.** Markdown comum em pasta dela, em árvore de índices ([ADR-0007](.speckit/architecture/adr/ADR-0007-acervo-em-arvore-de-indices.md)). Obsidian é opcional.
+- **Personalizável sem código empacotado.** Comportamento mora em arquivos que a pessoa lê e edita (`harness/modos/`, config). Nada de regra escondida.
+- **Worse is better.** A versão simples que roda hoje vence a elegante que demora.
+- **Tipos antes de código.** Nenhuma função sem interface TS definida.
+- **Erro claro em vez de fallback silencioso.** Se o provedor falha, a pessoa vê o erro.
+- **Soberania.** Rodar local é recomendado e sempre possível, mas a pessoa pode ligar a própria API. O importante é aprender, não onde o modelo roda.
 
 ---
 
@@ -36,57 +38,52 @@ Strata é **local-first**, **vault-first**, **Vereda-first**. Toda decisão téc
 
 | Camada | Escolha | Por quê |
 |---|---|---|
-| Core agent | Fork de `@mariozechner/pi-coding-agent` | Pi já abstrai múltiplos providers e tem tool-use maduro. Forkar é mais barato que reimplementar e nos dá o ponto de divergência crucial pra Vereda/Mestre (instanciar Tool Executor com subset diferente). |
-| GUI | Tauri v2 (Rust + WebView) | Binário enxuto coerente com postura local-first. Electron carrega Chromium completo — fricção maior, contradiz manifesto §VI. |
-| UI framework | React 19 + TS + TailwindCSS v3 | React 19 estável. Tailwind v3 (não v4) — ecossistema de componentes ainda majoritariamente v3. |
-| Estado | Zustand (slice pattern, setters explícitos) | Sem boilerplate de Redux. Setters explícitos > magic — coerente com "tipos e contratos antes". |
-| Modelos locais | Ollama (`localhost:11434`) | API compatível OpenAI, modelos quantizados rodam em hardware modesto. RTX 3050 (8GB) é o baseline. |
-| Modelos cloud | Anthropic, OpenAI, Gemini, DeepSeek, Groq, Cerebras (via Pi) | Herdado do Pi. Opt-in, nunca default. |
-| Vault | Obsidian (markdown + YAML frontmatter) | Markdown é durável (manifesto §VII — "registro geológico"). Sem lock-in proprietário. |
-| Testes | Vitest (unit) + Playwright (e2e) + TestSprite (QA) | Vitest é o padrão moderno de Vite. Playwright cobre Tauri WebView. TestSprite é decisão Mora. |
-| Superfícies | CLI (`strata`) + GUI (Tauri) | "Terminal ou janela" — usuário escolhe canal. Mesmo core, mesmo Mode Router. Ver [`.speckit/architecture/ide-integration.md`](.speckit/architecture/ide-integration.md) e [ADR-0002](.speckit/architecture/adr/ADR-0002-strata-as-fork-app-not-extension.md). |
-| Design System | Strata DS v2 (editorial register — Fraunces / Geist / Geist Mono variable, OFL · warm grounds · editorial-blue Vereda · warm-mustard Mestre · saturated Bloom ramp) | Editorial poster register (zine/livro técnico, não OS chrome). Identidade própria por produto Mora. **18 screens M1+M2+M3 codificadas** (M0.5 completa 2026-05-16). Ver [`design/`](design/) + [`.speckit/product/design-system.md`](.speckit/product/design-system.md). [ADR-0003](.speckit/architecture/adr/ADR-0003-editorial-register.md). |
-
-> **Cesar:** os "por quês" acima são inferidos do manifesto + CLAUDE.md. Edite o que estiver errado — essa coluna é doutrina, não pode estar imprecisa.
+| Harness | Programa próprio em TypeScript, em `harness/` | ADR-0005. O ciclo do agente, as ferramentas, o acervo e os modos são nossos. |
+| Provedores de modelo | `@earendil-works/pi-ai`, versão exata | ADR-0005. Só a camada de provedores. Primeira fatia: OpenCode Go, modelo `deepseek-v4-flash`. |
+| Runtime e build do harness | Bun (testes, execução e `bun build --compile`) | O `pi-ai` exige Node 22.19 ou mais novo, e o Node da máquina do César é o 22.18. |
+| Janela | Tauri v2 como cliente do harness, teto de 400 MB de RAM | ADR-0006. Electron recusado por RAM. Só depois da primeira fatia. |
+| UI | React 19 + TS + TailwindCSS v3 + Zustand | Herdado de maio, para a janela. |
+| Acervo | Markdown em árvore de índices | ADR-0007. |
+| Busca de fontes | arXiv e Crossref (sem chave) | Medido em 30/09/2026. OpenAlex e Semantic Scholar entram depois, com chave. |
+| Testes | `bun test` no harness, Vitest e Playwright na janela, TestSprite como QA | Testes do harness não usam rede. |
+| Design System | Strata DS v2, registro editorial (Fraunces / Geist / Geist Mono) | [ADR-0003](.speckit/architecture/adr/ADR-0003-editorial-register.md). 18 telas desenhadas em `design/`. |
 
 ---
 
-## §4. Regras Duras de Produto (não-negociáveis)
+## §4. Regras Duras de Produto (nenhum config muda)
 
-1. **Modo Vereda é o padrão. Sempre.** Modo Mestre é opt-in com fricção deliberada. Toggle persistente que mantenha Mestre ligado entre sessões = quebra a filosofia (manifesto §V).
-2. **Strata nunca escreve código de produção pro usuário em Vereda.** Pode escrever pseudo-código didático, exemplo conceitual curto (≤10 linhas) pra ilustrar — nunca implementação completa pronta pra colar.
-3. **Strata nunca edita nota existente do vault sem permissão explícita.** Cria em `inbox/` apenas. `inbox/` é território do Strata por contrato.
-4. **Sem fallback silencioso de provider.** Cadeia de fallback é pública (Ollama → provider configurado → erro). Ordem nunca pulada sem o usuário saber.
-5. **Frontmatter da nota segue schema único** (`tags`, `bloom`, `data`, `refs`, `relacionados`). Mudança no schema = ADR.
-6. **Telemetria é opt-in.** Nada sai da máquina sem o usuário ligar explicitamente.
-7. **Nunca logar conteúdo de nota nem prompt do usuário em arquivos de telemetria.** Privacidade do vault é absoluta.
+1. **O Strata nunca manda seus dados para fora.** Só sai o que vai para o provedor que a pessoa escolheu: sem telemetria, sem terceiro escondido. Com modelo local, nada sai. Com modelo na nuvem, o Strata diz claramente o que está saindo.
+2. **Toda fonte citada existe.** O conferidor de citações barra id que não está no acervo.
+
+Todo o resto é configurável, inclusive o modo padrão. A decisão de saber se alguma outra regra deve ficar travada está aberta no [ADR-0004](.speckit/architecture/adr/ADR-0004-customization-scope-extensible-vs-locked.md).
 
 ---
 
 ## §5. Mapa do Ecossistema
 
-Estado em **2026-05-16**:
+Estado em **2026-09-30**:
 
 ```
 strata/
-├── CLAUDE.md             [existe] instruções operacionais pra Claude Code
-├── manifesto.md          [existe] filosofia
-├── README.md             [existe] overview público
-├── CONTEXT_DIRECTOR.md   [existe] este documento
-├── .gitignore            [existe] bloqueia *.zip + design system zips
-├── .speckit/             [existe] specs vivas, planos, tracking, 4 ADRs
-├── design/               [existe] DS v2 editorial + 18 screens M1+M2+M3 + 4 fontes variable + 3 canonical screenshots
-└── (sem código de produção ainda — M1 dev começa o scaffolding Tauri)
+├── CLAUDE.md             instruções operacionais pra Claude Code
+├── manifesto.md          filosofia, em inglês e português
+├── README.md             overview público (ainda descreve a versão de maio)
+├── CONTEXT_DIRECTOR.md   este documento
+├── harness/              o harness (PR da Parte B da fatia 1)
+├── .speckit/             specs vivas, planos, tracking, 7 ADRs
+├── design/               DS v2 editorial + 18 telas + 4 fontes variable
+├── src/, src-tauri/      casca da janela de maio (Tauri + React), ainda sem chat
+└── e2e/                  Playwright
 ```
 
-**M0.5 fechada. M1.a e M1.b fechadas (2026-05-17).** Próximo marco: M1.c — UI shell (Header + Sidebar + Composer + Footer) reimplementando React dos JSX em `design/ui_kits/strata-desktop/`, com Zustand entrando pra estado, Playwright pra e2e, snapshot tests contra HTML do `design/`. Tracking em [`.speckit/plans/current.md`](.speckit/plans/current.md).
+Próximo marco: a primeira fatia do harness no terminal. Plano em [`.speckit/plans/proposta-fatia-1.md`](.speckit/plans/proposta-fatia-1.md), tracking em [`.speckit/plans/current.md`](.speckit/plans/current.md).
 
 ---
 
 ## §6. Como cada IA consulta este doc
 
 - **Claude Code (eu):** antes de propor qualquer feature, confirmo alinhamento com §2 (mentalidade), §3 (stack), §4 (regras duras). Desvio = bloqueador, nunca execução silenciosa.
-- **TestSprite:** cenários obrigatórios derivados de §4 (testar que Mestre não persiste entre sessões; que `inbox/` é o único destino de escrita; que Ollama down + sem cloud = erro claro, não fallback silencioso).
+- **TestSprite:** cenários obrigatórios derivados de §4 (nada de telemetria, toda fonte citada existe).
 - **Planejador externo (se houver):** todo plano declara "Implicações em §3/§4" explicitamente.
 
 ---
