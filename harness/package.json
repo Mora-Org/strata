@@ -1,0 +1,21 @@
+{
+  "name": "strata-harness",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Harness de estudo do Strata no terminal: pesquisa artigos, cita fontes e guarda um acervo em árvore de índices.",
+  "type": "module",
+  "scripts": {
+    "start": "bun run src/main.ts",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit",
+    "compile": "bun build --compile src/main.ts --outfile strata.exe"
+  },
+  "dependencies": {
+    "@earendil-works/pi-ai": "0.99.1",
+    "fast-xml-parser": "5.11.2"
+  },
+  "devDependencies": {
+    "@types/bun": "1.4.2",
+    "typescript": "7.0.2"
+  }
+}
