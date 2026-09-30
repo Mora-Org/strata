@@ -1,68 +1,51 @@
 ---
 dono: Cesar
-atualizado: 2026-05-04
-status: draft
+atualizado: 2026-09-30
+status: ativo
 ---
 
-# Spec dos Dois Modos
+# Spec dos dois modos
 
-## Modo Vereda (padrão)
+Os modos se chamavam Vereda e Mestre. Em 30/09/2026 o César renomeou para Estudo e Ação. Os
+identificadores `vereda` e `mestre` continuam no código da janela (`src/`) e no design
+system até a fatia da janela Tauri, que faz o renome.
 
-### Pode
-- Explicar conceitos, arquiteturas, mecanismos internos
-- Apontar referências primárias com citação
-- Mostrar pseudo-código didático curto (≤10 linhas, ilustrativo)
-- Gerar nota markdown no `inbox/` do vault
-- Ler arquivos do projeto do usuário pra contextualizar explicação
+## Modo Estudo (padrão)
 
-### Não pode
-- Escrever arquivo de código de produção (`.ts`, `.py`, `.rs`, etc.)
-- Editar arquivo existente do projeto do usuário
-- Editar nota existente do vault
-- Executar comandos no shell do usuário
-- Sugerir solução completa pronta pra colar
+O prompt vive em `harness/modos/estudo.md`. Mudar o comportamento é editar esse arquivo.
 
-### Output esperado de um turno
-1. Resposta no chat (explicação + referências)
-2. **Quando há ação no código do usuário**, resposta termina com **"ponte pra IDE"**: referência explícita a arquivo:linha + o que fazer ali. Strata aponta, usuário implementa na IDE dele. Detalhe em [`../architecture/ide-integration.md`](../architecture/ide-integration.md).
-3. Nota `.md` em `inbox/` (formato em `obsidian-note-spec.md`) — quando a resposta tem densidade conceitual; a seção `Próximos passos` da nota espelha a ponte pra IDE
-4. Nenhum outro side-effect
+### Faz
+- Lê o acervo antes de buscar fora: índice raiz, depois o tema, depois as fontes.
+- Pesquisa em fontes (arXiv e Crossref na primeira fatia) quando o acervo não basta.
+- Guarda toda fonte que usa antes de citá-la.
+- Pode escrever código de exemplo.
+- Não apressa: começa pelo conceito base, diz de onde cada ideia veio e deixa o próximo
+  passo de leitura.
+- Termina com `## Fontes pra seguir`, em ordem de leitura.
 
-### Restrição de design (modelo local)
-System prompt do Strata-Vereda fica em **≤2K tokens** (alvo). Razão: modelos locais 7B (Qwen2.5-coder, DeepSeek-coder) degradam com prompts grandes — lição extraída de [`Czar210/claude-code-local`](https://github.com/Czar210/claude-code-local), que strippa o harness de 10K tokens do Claude Code antes de enviar pro modelo MLX. Tunar valor exato em M2.
+### Não faz
+- Responder conceito de memória quando o conhecimento do modelo está desligado.
+- Citar fonte que não está guardada.
+- Usar travessão ou negrito no texto.
 
-## Modo Mestre (opt-in)
+### Conhecimento do modelo
+Começa desligado. `/conhecimento ligado` acrescenta a seção de
+`harness/modos/conhecimento-do-modelo.md` ao prompt. Com ele desligado e sem fonte que
+sustente a resposta, o Strata escreve "Não achei fonte", conta o que buscou e para.
 
-### Ativação
-- Comando explícito do usuário (ex: `/mestre`, botão com confirmação modal)
-- **Não persiste entre sessões.** Toda nova sessão começa em Vereda.
-- Indicador visual permanente quando ativo (cor diferente, badge persistente no header)
+## Modo Ação
 
-### Pode
-- Tudo que um agente de coding faz: ler, escrever, editar, executar
-- Mantém capacidade de gerar nota Obsidian (não desliga Vereda — adiciona Mestre por cima)
+Escreve, edita e executa. Fica para fatia futura. Regras já decididas:
+- Pode ser o padrão pelo config.
+- Continua valendo o que vale para todo o Strata: nada sai da máquina além do que vai para o
+  provedor escolhido, e toda fonte citada existe.
+- Operação destrutiva (apagar, force-push, drop) pede confirmação.
 
-### Não pode
-- Continuar ativo após `/sair-mestre` ou fim da sessão
-- Executar sem confirmação operações destrutivas (delete, force-push, drop)
+## Casos de teste
 
-## Fluxo de transição
-
-```
-[Vereda] --usuário digita /mestre--> [Confirmação] --sim--> [Mestre]
-                                          |
-                                          não
-                                          v
-                                       [Vereda]
-
-[Mestre] --usuário digita /vereda OU fecha sessão--> [Vereda]
-```
-
-## Casos de teste obrigatórios (TestSprite)
-
-1. Sessão nova abre em Vereda — sempre.
-2. `/mestre` sem confirmação não ativa.
-3. Em Vereda, tentativa de `Write`/`Edit`/`Bash` é bloqueada com mensagem clara.
-4. Em Mestre, badge visual presente em todo turno.
-5. Fechar e reabrir = volta pra Vereda mesmo se última sessão era Mestre.
-6. Em Mestre, tentativa de `rm -rf` ou similar pede confirmação extra.
+1. Sessão nova abre no modo configurado, e Estudo é o padrão sem config.
+2. Com o conhecimento desligado, pergunta sobre conceito inventado recebe "Não achei fonte".
+3. Com o conhecimento desligado e um conceito real que não está no acervo, a resposta vem de
+   fontes buscadas.
+4. Com o conhecimento ligado, a mesma pergunta pode ser respondida de memória.
+5. Id de fonte inexistente é barrado pelo conferidor.

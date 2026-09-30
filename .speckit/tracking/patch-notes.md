@@ -124,3 +124,10 @@ Mudanças com impacto observável. Granularidade: alguém externo deveria conseg
 - **Build smoke OK** — `npm run build` → ✓ built in 1.30s, 0 warnings, bundle bate M1.a (193 KB JS + 17 KB CSS + 4 fontes)
 - Pequeno fix iterativo: TS strict caught mock-vs-real-type mismatch em pi-session.test.ts (`runtime` não existe em CreateAgentSessionResult — só `session` + `extensionsResult`). Mock ajustado pra refletir o tipo real.
 - Próximo: M1.c — UI shell (Header + Sidebar + Composer + Footer) + Zustand + Playwright setup + snapshot tests contra design/HTML
+
+## 2026-09-30: direção nova e limpeza
+- Manifesto reescrito, em inglês e português
+- ADR-0005, ADR-0006 e ADR-0007 criados; ADR-0001 e ADR-0002 substituídos; ADR-0004 em revisão
+- `CONTEXT_DIRECTOR.md`, `CLAUDE.md`, `vision.md` e `modes-spec.md` reescritos
+- Removido o wrapper do Pi e o cliente do Ollama, com os testes deles; 57 testes da janela seguem verdes
+- `vitest` passou a excluir `e2e/`, que quebrava a suíte

@@ -40,3 +40,16 @@ Log cronológico. Decisões com impacto arquitetural geram ADR (`.speckit/archit
 - **Tauri config Mora-flavored:** identifier `org.mora.strata` (em vez do placeholder `com.tauri.dev`), window baseline 1280×800 (alinha com DS screens), minWidth 960. Cargo lib name `strata_lib` (em vez de `app_lib`).
 - **Estrutura `src/lib/` estabelecida:** `pi/` (wrapper), `ollama/` (HTTP client), `types/` (shared contracts). Padrão de organização que vai escalar pra `mode/` (M2), `obsidian/` (M2), `vault/` (M2), `tools/` (M4).
 - **Test coverage discipline mantida.** Sub-pass acrescentou 24 testes (60% growth). Cesar requested "testes bons e numerosos" — 40 testes pra 8 arquivos de código = razão saudável.
+
+## 2026-09-30
+- **O Strata voltou com direção nova.** Harness de estudo, open source, altamente personalizável, para quem quer aprender a programar e para pesquisa acadêmica. Falas e motivos em `product/direcao-2026-09.md`.
+- **ADR-0005:** harness próprio em TypeScript, só a camada de provedores vem do `@earendil-works/pi-ai` (versão exata). Substitui ADR-0001 e ADR-0002.
+- **ADR-0006:** janela Tauri como cliente do harness, com teto de 400 MB de RAM. Electron recusado por consumo de RAM.
+- **ADR-0007:** acervo em árvore de índices (INDICE, temas, fontes), markdown comum, Obsidian opcional.
+- **Primeiro uso do acervo:** responder com as fontes já guardadas e listar quais seguir.
+- **Modos renomeados:** Vereda vira Estudo, Mestre vira Ação. O Mestre (Ação) pode ser o padrão pelo config.
+- **O conhecimento do modelo começa desligado.** A pessoa liga com `/conhecimento ligado`.
+- **Duas regras que nenhum config muda:** o Strata nunca manda dados para fora (só o que vai ao provedor escolhido, sem telemetria), e toda fonte citada existe.
+- **Provedor da primeira fatia:** OpenCode Go, modelo `deepseek-v4-flash`, testado com chamada real. O OpenCode Go exige `sessionId` (senão 400 `MissingSessionID`).
+- **Bun 1.4.2 instalado** para rodar, testar e compilar o harness, porque o Node da máquina (22.18) não atende o pi-ai (22.19).
+- **M1 de maio encerrado sem entrega.** `src/lib/pi/` e `src/lib/ollama/` apagados.

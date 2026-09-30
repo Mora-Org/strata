@@ -1,8 +1,10 @@
 ---
 dono: Cesar
-atualizado: 2026-05-04
-status: draft
+atualizado: 2026-09-30
+status: substituído
 ---
+
+> Substituído em 30/09/2026: o fluxo agora é pergunta, ciclo do agente, ferramentas (busca, leitura do acervo, guardar fonte), conferidor de citações e resposta. Ver ADR-0005 e ADR-0007 e harness/src/.
 
 # Fluxo de Dados — Chat → Vault
 

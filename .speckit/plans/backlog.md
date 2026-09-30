@@ -1,43 +1,33 @@
 ---
 dono: Cesar
-atualizado: 2026-05-04
+atualizado: 2026-09-30
 status: ativo
 ---
 
 # Backlog Priorizado
 
-Ordem reflete prioridade. Itens sem ordem ainda ficam em "Não-priorizado".
+Ordem reflete prioridade. Direção em [`../product/direcao-2026-09.md`](../product/direcao-2026-09.md).
 
 ## Próximas iterações
 
-1. ~~**M0.5.b**~~ ✅ M1+M2 entregues 2026-05-05; M3 entregue 2026-05-16 — todas 18 screens design completas
-2. ~~**M0.5.c**~~ ✅ Codificação M1+M2 + DS no repo — fechada 2026-05-05
-3. ~~**M0.5.d**~~ ✅ Screens M3 entregues (branch tree signature + fork-from-msg + Cmd+K palette) — 2026-05-16
-4. ~~**M0.5.e**~~ ✅ Codificação M3 (adicionada ao `design/` existente sem sobrescrever) — fechada 2026-05-16
-5. **M1** ← **ATIVA** — Scaffolding Tauri + fork Pi + reimplementação dos 18 screens em React/TS real + chat hello-world Ollama. Sub-passes:
-   - ~~**M1.a**~~ ✅ Foundation (Vite + React 19 + TS + Tailwind v3 + Vitest + token bridge + 16/16 testes) — 2026-05-17
-   - ~~**M1.b**~~ ✅ Tauri 2 init + Pi wrapper (npm dep) + Ollama client + 40/40 testes — 2026-05-17
-   - **M1.c** ← **próxima** — UI shell (Header + Sidebar + Composer) + Zustand + Playwright + snapshot tests vs design/
-   - **M1.d** — wire chat hello-world (requer Ollama rodando)
-   - **M1.e** — settings + workspace picker + Tauri store persistence
-   - **M1.f** — polish + TestSprite scenarios + M1 fecha
-6. **M2** — Mode Router (Vereda/Mestre) + bloqueio de tools de escrita em Vereda + Note Builder + Vault Writer
-7. **M3** — Session branch tree (signature primitive) + Command palette (Cmd+K) + fork-from-message — implementação React/Tauri sobre os screens já desenhados em M0.5.d
-8. **M4** — **Tools opt-in + frontmatter rich** (extensibility wave). Inclui:
-   - Web search via Brave (`web.search` tool, opt-in com API key em `~/.strata/auth/brave.json`)
-   - Vault reader (`vault.read` tool pra preencher `relacionados` no frontmatter)
-   - Frontmatter completo (bloom auto-estimation, refs com URL real do search)
-   - Pattern de tool customization documentado (`.speckit/product/customization-guide.md`) — primeiro exemplo concreto de [ADR-0004](../architecture/adr/ADR-0004-customization-scope-extensible-vs-locked.md)
-   - Mode Router validation: bloqueia tool customizada de escrita em Vereda
-9. **M5** — Refinamentos de UX, atalhos de teclado, settings completo, a11y audit (target WCAG AA mínimo)
+1. **Fatia 1: o harness no terminal** (ativa). Ver [`current.md`](current.md).
+2. **Julgamento do aluno sobre cada fonte.** Marcar boa ou descartada para sempre; uma fonte
+   descartada nunca mais volta numa busca.
+3. **Busca geral na web** para aulas e matérias. Decidir o serviço de busca e se a pessoa traz a
+   própria chave. O modelo já improvisou buscas no DuckDuckGo via `ler_pagina` em 30/09/2026.
+4. **Janela Tauri** como cliente do harness, medida contra o teto de 400 MB (ADR-0006). Faz também
+   o renome de `vereda`/`mestre` para Estudo e Ação no código e no design system.
+5. **Modo Ação**, com possibilidade de ser o padrão pelo config.
+6. **Conselheiro de modelos:** recomenda modelos locais pequenos e médios (Bonsai, Gemma e outros),
+   custo contra privacidade, detalhes das empresas, sabendo a RAM da máquina.
+7. **Diário de sessão e mapa do que a pessoa domina**, para continuar de onde parou e ajustar o nível.
+8. **Novas fontes de artigos:** OpenAlex e Semantic Scholar, com chave gratuita.
+9. **Reescrever o ADR-0004** e decidir se alguma outra regra fica fora do alcance do config.
 
-## Não-priorizado (parking lot)
+## Não priorizado
 
-- Histórico de sessões
-- Múltiplos vaults
-- Sync de nota com edits do usuário
-- Telemetria opt-in
-- UI de configuração de providers cloud
-- Atalho de teclado pra alternar modo
-- Export de conversa pra markdown
-- **Produto Mora separado: agente de email/inbox** (escopo declarado OUT do Strata em decisão 2026-05-05; quando virar prioridade, novo repo `Mora-Org/{nome}` com Director + speckit próprios)
+- Múltiplos provedores no executável (hoje só o `opencode-go`)
+- Leitura de PDF no `ler_pagina`
+- Marcar como "sem fonte" o que vem da memória do modelo com o conhecimento ligado
+- Exportar conversa para markdown
+- Produto Mora separado: agente de email/inbox (fora do Strata desde 2026-05-05)

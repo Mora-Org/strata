@@ -1,8 +1,10 @@
 ---
 dono: Cesar
-atualizado: 2026-05-04
-status: draft
+atualizado: 2026-09-30
+status: substituído
 ---
+
+> Desatualizado em 30/09/2026: a ideia de duas superfícies (terminal e janela) continua, agora no ADR-0006. O resto fala do fork do Pi, do Obsidian e do modelo local de 2K tokens, que saíram.
 
 # Integração com a IDE
 

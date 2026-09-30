@@ -9,5 +9,7 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./src/setupTests.ts'],
     css: false,
+    // os specs de e2e são do Playwright; o vitest quebra se tentar rodá-los
+    exclude: ['**/node_modules/**', '**/dist/**', 'e2e/**'],
   },
 });

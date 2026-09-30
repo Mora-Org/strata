@@ -1,14 +1,18 @@
 ---
 dono: Cesar
-atualizado: 2026-05-05
-status: draft
+atualizado: 2026-09-30
+status: em revisão
 supersedes: nenhum
 superseded_by: nenhum
 ---
 
 # ADR-0004 — Customization scope: extensible surfaces vs locked product rules
 
-> **Status: draft.** Promove pra `ativo` quando M4 começar a implementar tool extensibility surface (web search, custom tools, plugins de comunidade). Até lá, conteúdo pode ser editado.
+> **Status: em revisão (30/09/2026).** O corpo abaixo é de maio e está desatualizado: fala de fork do Pi, de Vereda e Mestre e de vault Obsidian. A entrevista do manifesto já decidiu o essencial, registrado em [`entrevista-manifesto.md`](../../product/entrevista-manifesto.md):
+>
+> - O Mestre (agora Ação) pode virar padrão pelo config. Não há mais trava sobre o modo padrão.
+> - Só duas regras nenhum config muda: (1) o Strata nunca manda seus dados pra fora, e só sai o que vai pro provedor escolhido, sem telemetria nem terceiro escondido; (2) toda fonte citada existe.
+> - Falta reescrever este ADR no formato novo e decidir se alguma outra regra fica fora do alcance do config.
 
 ## Contexto
 

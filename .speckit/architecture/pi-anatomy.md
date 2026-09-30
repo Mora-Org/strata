@@ -1,8 +1,10 @@
 ---
 dono: Cesar
-atualizado: 2026-05-04
-status: draft
+atualizado: 2026-09-30
+status: substituído
 ---
+
+> Substituído em 30/09/2026 pelo ADR-0005: o Strata não forka mais o Pi, só usa o pi-ai para provedores. Fica como histórico do que o Pi oferecia em maio.
 
 # Anatomia do Pi — o que herdamos, o que estendemos, o que cuidamos
 
