@@ -1,101 +1,101 @@
-# DEV.md — Strata Developer Setup
+# DEV.md: Strata, setup de desenvolvimento
 
-Quick reference pra rodar Strata localmente em dev. Pra filosofia/produto, ver [`manifesto.md`](manifesto.md). Pra regras/stack, ver [`CONTEXT_DIRECTOR.md`](CONTEXT_DIRECTOR.md). Pra plano atual, ver [`.speckit/plans/current.md`](.speckit/plans/current.md).
+Referência rápida pra rodar o Strata localmente. Pra filosofia, [`manifesto.md`](manifesto.md). Pra regras e stack, [`CONTEXT_DIRECTOR.md`](CONTEXT_DIRECTOR.md). Pro plano atual, [`.speckit/plans/current.md`](.speckit/plans/current.md). Pra quem é novo no repo, o README explica o que o programa faz.
+
+O repo tem duas partes que não dependem uma da outra: o harness (`harness/`), que é o programa de verdade, e a casca da janela (`src/`, `src-tauri/`), que ainda não tem chat.
 
 ## Pré-requisitos
 
-- **Node.js 22+** (atual: v22.18+)
-- **npm 10+**
-- **Ollama** (pra M1.d+) rodando em `localhost:11434` — `ollama serve`
-- **Rust + Tauri 2 CLI + MSVC build tools** (Windows) — vem em M1.b
+- Bun, pro harness: `winget install Oven-sh.Bun`. O Node não serve pro harness: o pi-ai exige Node 22.19 ou mais novo, e o Node da máquina do César é o 22.18.
+- Node 22 e npm 10, pra casca da janela.
+- Uma chave do OpenCode Go na variável de ambiente `OPENCODE_API_KEY`, só pra rodar o harness contra o modelo de verdade. Os testes não precisam dela.
+- Rust, Tauri 2 CLI e as ferramentas de build do MSVC, só quando a janela for mexida.
 
-## Instalação
+No PowerShell, `[Environment]::SetEnvironmentVariable('OPENCODE_API_KEY', '<chave>', 'User')` grava a variável, mas só terminais abertos depois enxergam. Num terminal que já estava aberto, `$env:OPENCODE_API_KEY` continua vazio.
+
+## Harness
+
+```bash
+cd harness
+bun install
+bun test                  # 39 testes, sem rede
+bun run typecheck         # checagem de tipos
+bun run start             # abre o prompt
+bun run compile           # gera strata.exe
+```
+
+O executável gerado pesa uns 88 MB, quase tudo o runtime do Bun, e não entra no git. Ele procura a pasta `modos/` ao lado dele.
+
+### Configuração
+
+Sem arquivo, o padrão é o OpenCode Go com o modelo `deepseek-v4-flash`, o acervo em `~/Strata/acervo` e o conhecimento do modelo desligado. Pra mudar, crie `~/.strata/config.json` com as chaves `provedor`, `modelo`, `acervo` e `conhecimento_ligado`. Chave desconhecida é erro, e chave de API nunca vai nesse arquivo.
+
+A variável `STRATA_CONFIG` aponta pra outro arquivo de config. É o jeito de testar sem sujar o acervo real.
+
+### Estrutura
+
+```
+harness/
+├── src/
+│   ├── main.ts           o terminal: prompt, comandos, streaming
+│   ├── ciclo.ts          o ciclo do agente, com teto de passos por pergunta
+│   ├── ferramentas.ts    as seis ferramentas que o modelo recebe
+│   ├── acervo.ts         lê e grava o acervo, regenera os índices
+│   ├── fontes.ts         arXiv, Crossref e leitura de página
+│   ├── citacoes.ts       o conferidor: toda fonte citada existe
+│   └── config.ts         leitura do config
+├── modos/                os prompts, em markdown (mexer aqui muda o comportamento)
+└── test/                 testes e fixtures reais do arXiv e do Crossref
+```
+
+### Armadilhas conhecidas
+
+- O OpenCode Go devolve 400 `MissingSessionID` se a chamada não levar `sessionId`. O harness passa um por conversa.
+- O Bun bloqueia os postinstalls de `@google/genai` e `protobufjs`. Deixe bloqueados enquanto nada quebrar.
+- Teste que chama `buscar_artigos` precisa zerar a espera do arXiv (`zerarEsperaArxiv`), senão o segundo pedido espera 4 segundos de verdade.
+- O arXiv recusou pedidos com 429 e timeout em 30/09/2026, até um `curl` isolado. O intervalo de 4 segundos em `INTERVALO_ARXIV_MS` é provisório.
+- Teste com o modelo de verdade custa centavos, mas custa. Use acervos de teste descartáveis, fora do repo.
+- No PowerShell 5.1, ao gravar a saída do harness, ponha `[Console]::OutputEncoding` e `$OutputEncoding` em UTF-8, senão os acentos viram `?`.
+
+## Casca da janela
+
+Saiu da fase de maio e ainda não tem chat. Não roda o harness.
 
 ```bash
 npm install
+npm run dev          # servidor Vite (localhost:5173)
+npm run build        # checagem de tipos e bundle
+npm run test:run     # Vitest, uma rodada
+npm run test         # Vitest em modo watch
+npm run e2e          # Playwright
 ```
 
-## Comandos
-
-```bash
-npm run dev          # dev server Vite (localhost:5173)
-npm run build        # build produção (TS check + Vite bundle)
-npm run preview      # preview do build local
-npm run test         # Vitest watch mode
-npm run test:run     # Vitest single run (CI-friendly)
-npm run test:ui      # Vitest UI interativa
+```
+src/
+├── main.tsx, App.tsx
+├── components/       chat, icons, layout (Header, Sidebar, AppShell), ui
+├── store/strata.ts   estado com Zustand
+├── lib/types/        tipos compartilhados
+├── types/messages.ts
+└── styles/tokens.css ponte pra design/colors_and_type.css
 ```
 
-## Estrutura
+Os identificadores `vereda` e `mestre` continuam nesse código. São os nomes antigos de Estudo e Ação, e o renome acontece junto com a fatia da janela.
 
-```
-strata/
-├── design/                       DS canônico — referência visual (não runtime)
-├── src/                          código React/TS
-│   ├── main.tsx                  entry point
-│   ├── App.tsx                   componente raiz
-│   ├── index.css                 entry CSS (importa tokens + Tailwind)
-│   ├── styles/
-│   │   └── tokens.css            bridge pra design/colors_and_type.css
-│   ├── setupTests.ts             Vitest setup (jest-dom matchers)
-│   ├── App.test.tsx              smoke test
-│   └── __tests__/
-│       ├── tokens.test.ts        token bridge contract
-│       └── fonts.test.ts         fonts bundle contract
-├── .speckit/                     specs vivas
-├── index.html                    Vite entry HTML
-├── package.json
-├── tsconfig.json + tsconfig.app.json + tsconfig.node.json
-├── vite.config.ts                Vite + Vitest config
-├── tailwind.config.js
-├── postcss.config.js
-└── DEV.md                        este arquivo
-```
+### Ponte de tokens
 
-## Token bridge — como funciona
+`src/styles/tokens.css` faz `@import '../../design/colors_and_type.css'`, e o design system em `design/` é a única fonte dos tokens. Mudança nele aparece em `src/` sozinha. Não duplique token: se precisar de um novo, acrescente em `design/colors_and_type.css`.
 
-`src/styles/tokens.css` faz `@import '../../design/colors_and_type.css'`. O DS canônico (em `design/`) é a **single source of truth**.
+### design/
 
-- Mudanças em `design/colors_and_type.css` refletem automaticamente em `src/`
-- `@font-face` dentro do colors_and_type.css resolve paths relativos à PRÓPRIA localização do arquivo CSS — fontes em `design/assets/fonts/` continuam alcançáveis
-- Tokens disponíveis em qualquer componente via `var(--bedrock)`, `var(--accent)`, `var(--bloom-3)`, etc.
+A pasta tem 18 telas desenhadas com o Claude Design. É referência visual, não runtime. Pra ver o kit no navegador precisa de um servidor HTTP, por causa do React via Babel CDN:
 
-**Não duplique tokens.** Se precisar de novo token, adicione em `design/colors_and_type.css` e ele aparece automaticamente.
-
-## Testes (estado em M1.a)
-
-| Suite | Cobre |
-|---|---|
-| `App.test.tsx` | App renderiza, marker M1.a presente, landmark `<main>` |
-| `__tests__/tokens.test.ts` | Bridge existe, design tokens file presente, oklch vars + Bloom ramp + type families declarados |
-| `__tests__/fonts.test.ts` | 4 variable fonts presentes em design/assets/fonts/, OFL licenses preservadas |
-
-**Próximos passos de teste (por sub-pass):**
-- **M1.b** — Pi session com mock, Ollama client com fetch mockado
-- **M1.c** — Snapshot tests contra design/ HTML, Playwright e2e setup
-- **M1.d** — e2e smoke (input → reply visível), stream parsing, banner connection-lost
-- **M1.e** — Settings save/load, workspace picker e2e
-- **M1.f** — A11y audit baseline, TestSprite QA scenarios escritos
-
-## Sobre o design/
-
-A pasta `design/` contém 18 screens M1+M2+M3 desenhadas via Claude Design — **kit de referência visual**, NÃO runtime. Em M1.c reimplemento as M1 screens em React real, usando o HTML/CSS do kit como guia.
-
-Pra rever visualmente o kit (precisa servidor HTTP por causa do React via Babel CDN):
 ```bash
 cd design/ui_kits/strata-desktop
 python -m http.server 8765
 # abre http://localhost:8765
 ```
 
-## Stack travada (CLAUDE.md §3)
+## Stack travada
 
-Stack mudou? Atualizar [`CONTEXT_DIRECTOR.md`](CONTEXT_DIRECTOR.md) §3 e abrir ADR. Stack atual:
-
-- **Build:** Vite 7 + TypeScript strict
-- **UI:** React 19 + TailwindCSS v3
-- **Estado:** Zustand (entra em M1.c)
-- **Testes:** Vitest 3 + Testing Library + jsdom + Playwright (M1.c+) + TestSprite (QA)
-- **Tauri 2** (entra em M1.b)
-- **Pi fork** (entra em M1.b)
-- **Design system:** Strata DS v2 — ver `design/` + `.speckit/product/design-system.md`
+Se a stack mudar, atualize [`CONTEXT_DIRECTOR.md`](CONTEXT_DIRECTOR.md) §3 e abra um ADR. A stack atual está lá, com o motivo de cada escolha.
