@@ -1,123 +1,88 @@
-<div align="center">
-
-```
-  ___________________________
- |  _______________________  |
- | |  ___________________  | |
- | | |                   | | |
- | | |     S T R A T A   | | |
- | | |___________________| | |
- | |_______________________| |
- |___________________________|
-```
-
 # Strata
 
-*"Cada camada de entendimento é um registro permanente."*
+A study harness for the terminal. You ask about a concept, it looks for sources, keeps the ones it used in a collection that belongs to you, and answers with links you can check.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-c084fc?style=flat-square&logo=opensourceinitiative&logoColor=white)](LICENSE)
-[![Mora Org](https://img.shields.io/badge/Mora-Org-5eead4?style=flat-square)](https://github.com/Mora-Org)
-[![Built with intention](https://img.shields.io/badge/Built%20with-Inten%C3%A7%C3%A3o-fb7185?style=flat-square)](manifesto.md)
+Strata is at an early stage. One person is building it, it runs only in the terminal, and it has been tried on one machine and one model provider. The parts that do not exist yet are listed further down, under plans.
 
-</div>
+## Why it exists
 
----
+Whoever does not dig in does not learn, they only copy and paste code. A language model also invents things and takes no responsibility for them. Sources can be wrong too, but a source has a name and an address, so over time you learn whom to trust. That is the idea behind Strata. The longer version is in the [manifesto](manifesto.md), in English and Portuguese.
 
-## O que é
+## What works today
 
-Strata é um agente de coding **local-first** que trabalha com o seu Obsidian — não contra o seu aprendizado.
+1. Study mode is the only mode. It does not hurry you. It reads your collection first and searches arXiv and Crossref only when the collection is not enough. It can also write example code when that helps.
+2. Every source it uses is saved as a markdown note. Every answer cites its sources as `[fonte:id]` and ends with a list of which saved sources to read next, in order.
+3. A citation check refuses an answer that cites a source that is not in the collection.
+4. The knowledge of the model itself starts switched off, so a concept has to come from a source. The command `/conhecimento ligado` switches it on, and `/conhecimento desligado` switches it off again.
+5. The behavior of the study mode lives in a markdown file, `harness/modos/estudo.md`. Changing how it behaves means editing text.
 
-Por padrão, ele não escreve código por você. Ele mapeia o terreno, aponta referências primárias, explica arquitetura e deposita camadas de entendimento diretamente no seu vault. Quando você quer que ele resolva — você ativa o **Modo Mestre**, com intenção.
+## The collection
 
-Roda no terminal e em janela própria. Funciona offline.
-
----
-
-## Dois modos
+It is a folder of plain markdown, organized as a tree of indexes:
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                                                                 │
-│  [ VEREDA ]  Padrão                                             │
-│              Guia. Referencia. Explica arquitetura.             │
-│              Gera notas prontas para o seu vault Obsidian.      │
-│              Nunca escreve código de produção por você.         │
-│                                                                 │
-│  [ MESTRE ]  Opt-in explícito                                   │
-│              Agente completo. Escreve, edita, executa.          │
-│              Ativado com intenção — não por conveniência.       │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
+acervo/
+  INDICE.md          one topic per line
+  temas/<topic>.md   one source per line, in reading order
+  fontes/<id>.md     one note per source
 ```
 
----
+The model chooses the topic, the summary and the order. The program writes the files and rebuilds the indexes. The default folder is `~/Strata/acervo`, and you can change it in the config. Put the folder inside an Obsidian vault if you want to open it there, but nothing depends on Obsidian.
 
-## Como funciona
+## Try it
 
-1. Você traz um problema ou conceito
-2. No **Modo Vereda**, Strata explica o terreno, aponta recursos e gera uma nota `.md` para o seu vault
-3. A nota inclui nível Bloom estimado, backlinks e referências primárias
-4. **Você implementa.** O entendimento é seu.
+You need [Bun](https://bun.sh) and an API key for OpenCode Go in the `OPENCODE_API_KEY` environment variable. Bun is required because the model library needs a newer Node than many machines have.
 
----
-
-## Integração Obsidian
-
-Strata gera notas com frontmatter compatível:
-
-```markdown
----
-tags: [conceito, sistemas, c]
-bloom: 2
-data: 2026-05-04
-refs: [K&R, CS:APP]
----
-
-## [[malloc]] e o Heap
-
-O heap é a região de memória gerenciada manualmente...
+```
+cd harness
+bun install
+bun test
+bun run src/main.ts
 ```
 
-As notas vão direto para `inbox/` ou `conceitos/` do seu vault — você decide.
+The test suite uses no network. The commands inside the program are `/conhecimento ligado`, `/conhecimento desligado`, `/acervo` and `/sair`.
 
----
+Without a config file it uses OpenCode Go with the model `deepseek-v4-flash`. To change that, create `~/.strata/config.json`:
 
-## Stack
+```json
+{
+  "provedor": "opencode-go",
+  "modelo": "deepseek-v4-flash",
+  "acervo": "C:\\Users\\you\\Strata\\acervo",
+  "conhecimento_ligado": false
+}
+```
 
-| Camada | Tecnologia |
-|--------|-----------|
-| Core agent | Fork do [Pi](https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent) (TypeScript) |
-| GUI | Tauri (Rust) + React + TypeScript + TailwindCSS |
-| Estado | Zustand |
-| Modelos locais | Ollama |
-| Modelos cloud | Anthropic, OpenAI, Gemini, DeepSeek e outros (via Pi) |
-| Vault | Obsidian (markdown + frontmatter) |
-| Design system | Strata DS v2 — editorial register (Fraunces / Geist / Geist Mono variable) — ver [`design/`](design/) |
+A key written in that file is rejected on purpose. Keys come only from the environment.
 
----
+`bun build --compile` produces a single executable of about 88 MB, most of it the Bun runtime. The executable looks for the `modos` folder next to itself.
 
-## Por que existe
+## Known problems
 
-As ferramentas de IA atuais otimizam para velocidade de output.  
-Strata otimiza para profundidade de entendimento.
+1. arXiv answered with timeouts and rate limit errors on the last day of testing, even for a single request. The program now waits four seconds between arXiv requests, which is a stopgap. The model usually works around a failed search by opening the arXiv page directly.
+2. Only the `opencode-go` provider is included in the executable.
+3. Pages that are PDFs cannot be read.
+4. Only input through a pipe was tested. The interactive prompt was not.
 
-A maioria das ferramentas escreve o código por você.  
-Strata mostra o caminho e espera você andar.
+## Plans
 
-Leia o [**Manifesto Strata →**](manifesto.md)
+None of this exists yet.
 
----
+1. A desktop window with Tauri, with a memory limit of 400 MB. The folder `src` and `src-tauri` hold only a shell from May that has no chat.
+2. An action mode that writes, edits and runs code, which you could make the default.
+3. Web search for lessons and course material, and more sources of papers.
+4. Marking a source as good or as discarded for good, so the next search never brings it back.
+5. Advice about local models, with their cost and privacy trade offs, based on how much memory your machine has.
 
-## Parte da Mora
+## Two rules no setting changes
 
-> *Glyph · Atlas · Lattes Director · **Strata***
+1. Strata never sends your data out. Only what goes to the provider you chose leaves the machine, with no telemetry and no hidden third party. With a local model nothing leaves. With a cloud model, Strata is meant to say plainly what is leaving. This second part is not built yet.
+2. Every cited source exists.
 
-[**Mora Org →**](https://github.com/Mora-Org)
+## Repository map
 
----
+1. `harness` is the program.
+2. `design` is the visual language for the future window.
+3. `.speckit` holds plans, decisions and the direction of the project.
 
-<div align="center">
-
-**Strata** · Um produto Mora · Open Source com alma
-
-</div>
+Strata is a [Mora](https://github.com/Mora-Org) project and is released under the MIT license.
